@@ -1,0 +1,6 @@
+site_name: DJKal Library
+theme: ivory
+nav:
+- Home: index.md
+- OpenShift:
+  - Install Made Easy: ime.md
