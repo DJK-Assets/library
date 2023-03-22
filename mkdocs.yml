@@ -3,4 +3,9 @@ theme: ivory
 nav:
 - Home: index.md
 - OpenShift:
-  - Install Made Easy: ime.md
+  - Skills Needed for Install: skills-needed.md
+  - IPI Install step by step: IPI-Step-by-Step.md
+  - Bring your own VPC: Bring-Your-Own-VPC.md
+  - DNS Networking: DNS-Networking.md
+  - Enabling Certs: Enabling-Certs.md
+  - Troubleshooting Install: Troubleshooting-Install.md
