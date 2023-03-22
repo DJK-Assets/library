@@ -1,8 +1,14 @@
-# Authors
+# About the Authors
 
-Kyle Dawson
+![](images/team-pics.png)
 
-Jeff Imholz
+##Kyle Dawson
+Kyle BIO
 
-Dave Krier
+##Jeff Imholz
+Jeff BIO
+
+##[<img src="https://www.linkedin.com/in/davekrier/">](images/linkedin.png)Dave Krier
+Dave has over 25 years of IT industry experience with deep skills in solution architecture, application development, and infrastructure management. He is an accomplished technical specialist who has traveled around the nation consulting with IBM’s most successful customers. 
+
 
