@@ -9,3 +9,8 @@ nav:
   - DNS Networking: DNS-Networking.md
   - Enabling Certs: Enabling-Certs.md
   - Troubleshooting Install: Troubleshooting-Install.md
+- How To:
+  - Setup MKDocs: mkdocs-setup.md
+- videos:
+  - First Demo Video: demo.md
+  
