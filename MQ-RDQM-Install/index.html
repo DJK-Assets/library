@@ -134,17 +134,22 @@ hostnamectl  &lt;-- Verify Kernel version matches on all 3 machines.
 <h2 id="installing-rdqm">Installing RDQM</h2>
 <p><a href="https://www.ibm.com/docs/en/ibm-mq/9.3?topic=multiplatforms-installing-rdqm-replicated-data-queue-managers">Documentation</a></p>
 <p><strong>1. Provision 3 (2CPU x 16GB mem) machines in VSphere</strong></p>
-<pre><code>*Uncheck the "SECURE BOOT" option for all 3 VM's*
-
-Minimum requirements are 2CPU x 16GB of Mem
-
-Add an extra 100GB disk
-</code></pre>
+<ul>
+<li>
+<p>Uncheck the "SECURE BOOT" option for all 3 VM's</p>
+</li>
+<li>
+<p>Minimum requirements are 2CPU x 16GB of Mem</p>
+</li>
+<li>
+<p>Add an extra 100GB disk</p>
+</li>
+</ul>
 <p><strong>2. Install packages (on all 3 boxes)</strong></p>
-<pre><code>sudo yum -y install libxslt net-snmp-libs nfs-utils nfs-utils-coreos perl-TimeDate python3-lxml python-unversioned-command
+<pre><code class="language-R">sudo yum -y install libxslt net-snmp-libs nfs-utils nfs-utils-coreos perl-TimeDate python3-lxml python-unversioned-command
 </code></pre>
 <p><strong>3. SCP the install file (to all three servers)</strong></p>
-<pre><code>scp &lt;file&gt;@&lt;ipaddress of target&gt;:&lt;location on target to place file&gt;
+<pre><code class="language-R">scp &lt;file&gt;@&lt;ipaddress of target&gt;:&lt;location on target to place file&gt;
 </code></pre>
 <p>EXAMPLE: </p>
 <p><code>scp ./IBM_MQ_9.3.0.2_LINUX_X86-64.tar.gz bastion@10.67.42.177:/home/bastion/</code></p>
