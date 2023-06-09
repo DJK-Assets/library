@@ -126,7 +126,7 @@
 <li><a href="">https://www.redhat.com/sysadmin/create-physical-volume</a></li>
 </ul>
 <h2 id="general-commands-that-were-of-use-during-my-attempts-to-install">General Commands that were of use during my attempts to install</h2>
-<pre><code class="language-R">yum upgrade 
+<pre><code>yum upgrade 
 yum update
 yum update kernel
 hostnamectl  &lt;-- Verify Kernel version matches on all 3 machines.
@@ -161,9 +161,9 @@ hostnamectl  &lt;-- Verify Kernel version matches on all 3 machines.
 <p>Look on this page for a download for RHEL 9.2 Kernal to match the OS</p>
 <p><strong>Interim kernel module releases</strong></p>
 <ul>
-<li>https://www.ibm.com/support/pages/ibm-mq-replicated-data-queue-manager-kernel-modules#LTS9_2</li>
+<li><a href="https://www.ibm.com/support/pages/ibm-mq-replicated-data-queue-manager-kernel-modules#LTS9_2">https://www.ibm.com/support/pages/ibm-mq-replicated-data-queue-manager-kernel-modules#LTS9_2</a></li>
 <li>
-<p>• https://www.ibm.com/support/fixcentral/swg/downloadFixes?parent=ibm%2FWebSphere&amp;product=ibm/WebSphere/WebSphere+MQ&amp;release=All&amp;platform=All&amp;function=fixId&amp;fixids=9-IBM-MQ-LAIT43724-kmod-drbd-9.1.14&amp;includeRequisites=1&amp;includeSupersedes=0&amp;downloadMethod=http&amp;source=SAR</p>
+<p><a href="https://www.ibm.com/support/fixcentral/swg/downloadFixes?parent=ibm%2FWebSphere&amp;product=ibm/WebSphere/WebSphere+MQ&amp;release=All&amp;platform=All&amp;function=fixId&amp;fixids=9-IBM-MQ-LAIT43724-kmod-drbd-9.1.14&amp;includeRequisites=1&amp;includeSupersedes=0&amp;downloadMethod=http&amp;source=SAR">https://www.ibm.com/support/fixcentral/swg/downloadFixes?parent=ibm%2FWebSphere&amp;product=ibm/WebSphere/WebSphere+MQ&amp;release=All&amp;platform=All&amp;function=fixId&amp;fixids=9-IBM-MQ-LAIT43724-kmod-drbd-9.1.14&amp;includeRequisites=1&amp;includeSupersedes=0&amp;downloadMethod=http&amp;source=SAR</a></p>
 <p><strong>THIS IS THE FILE I USED:</strong> interim fix: 9-IBM-MQ-LAIT43724-kmod-drbd-9.1.14</p>
 <p><strong>Steps to install (On all 3 machines)</strong></p>
 </li>
@@ -262,7 +262,7 @@ passwd -l mqm
 </code></pre>
 <h2 id="configure-selinux-security">Configure SELINUX Security</h2>
 <p><strong>NOTE</strong>: <em>Run these commands on all machines as ROOT</em></p>
-<pre><code class="language-R">semanage permissive -a drbd_t
+<pre><code>semanage permissive -a drbd_t
 /opt/mqm/samp/rdqm/firewalld/configure.sh
 </code></pre>
 <h2 id="setup-local-dns">Setup local dns</h2>
@@ -270,7 +270,7 @@ passwd -l mqm
 <pre><code class="language-R">vi /etc/hosts
 </code></pre>
 <p><strong>ADD THIS TO THE FILE</strong></p>
-<pre><code class="language-R">&lt;ip address VM1&gt; qm1
+<pre><code>&lt;ip address VM1&gt; qm1
 &lt;ip address VM2&gt; qm2
 &lt;ip address VM3&gt; qm3
 </code></pre>
@@ -279,7 +279,7 @@ passwd -l mqm
 <pre><code class="language-R">vi /var/mqm/rdqm.ini
 </code></pre>
 <p><strong>EDIT FILE LIKE THIS</strong></p>
-<pre><code class="language-R">    Node:
+<pre><code>    Node:
       Name=qm1
          HA_Replication=10.67.42.177
           HA_Primary=10.67.42.177
