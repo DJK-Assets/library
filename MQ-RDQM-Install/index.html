@@ -154,7 +154,7 @@ hostnamectl  &lt;-- Verify Kernel version matches on all 3 machines.
 <p>EXAMPLE: </p>
 <p><code>scp ./IBM_MQ_9.3.0.2_LINUX_X86-64.tar.gz bastion@10.67.42.177:/home/bastion/</code></p>
 <p><strong>4. Untar the file (on all 3 servers)</strong></p>
-<pre><code>tar -xvf IBM_MQ_9.3.0.2_LINUX_X86-64.tar.gz
+<pre><code class="language-R">tar -xvf IBM_MQ_9.3.0.2_LINUX_X86-64.tar.gz
 </code></pre>
 <p><strong>5. Install kernal</strong> </p>
 <p><strong>NOTE:</strong> <em>I ran into issues when trying to use the drbd kernel that is provided with the IBM MQ 9.3.0.2 download. I had to download a NEWER one because the RHEL OS was at a higher version than what was expected.</em> </p>
@@ -168,29 +168,29 @@ hostnamectl  &lt;-- Verify Kernel version matches on all 3 machines.
 <p><strong>Steps to install (On all 3 machines)</strong></p>
 </li>
 </ul>
-<pre><code>wget https://ak-delivery04-mul.dhe.ibm.com/sdfdl/v2/sar/CM/WS/0bfrk/0/Xa.2/Xb.jusyLTSp44S03o2r0ALI9rdnHzZDQ4Pdhenqod7cCfzE79MnOWh_uumEiKA/Xc.CM/WS/0bfrk/0/9-IBM-MQ-LAIT43724-kmod-drbd-9.1.14.tgz/Xd./Xf.LPR.D1VK/Xg.12320491/Xi.habanero/XY.habanero/XZ.toSiALXjCZMNaORuZis7fBS2qXvKsM_3/9-IBM-MQ-LAIT43724-kmod-drbd-9.1.14.tgz
+<pre><code class="language-R">wget https://ak-delivery04-mul.dhe.ibm.com/sdfdl/v2/sar/CM/WS/0bfrk/0/Xa.2/Xb.jusyLTSp44S03o2r0ALI9rdnHzZDQ4Pdhenqod7cCfzE79MnOWh_uumEiKA/Xc.CM/WS/0bfrk/0/9-IBM-MQ-LAIT43724-kmod-drbd-9.1.14.tgz/Xd./Xf.LPR.D1VK/Xg.12320491/Xi.habanero/XY.habanero/XZ.toSiALXjCZMNaORuZis7fBS2qXvKsM_3/9-IBM-MQ-LAIT43724-kmod-drbd-9.1.14.tgz
 </code></pre>
-<pre><code>tar -xvf 9-IBM-MQ-LAIT43724-kmod-drbd-9.1.14.tgz
+<pre><code class="language-R">tar -xvf 9-IBM-MQ-LAIT43724-kmod-drbd-9.1.14.tgz
 </code></pre>
-<pre><code>cd 9-IBM-MQ-LAIT43724-kmod-drbd-9.1.14
+<pre><code class="language-R">cd 9-IBM-MQ-LAIT43724-kmod-drbd-9.1.14
 </code></pre>
-<pre><code>yum install ./yum install ./kmod-drbd-9.1.14+ptf.2_5.14.0_284.11.1-1.x86_64.rpm
+<pre><code class="language-R">yum install ./yum install ./kmod-drbd-9.1.14+ptf.2_5.14.0_284.11.1-1.x86_64.rpm
 </code></pre>
 <p><strong>6. Install DRBD Utils</strong></p>
-<pre><code>yum install /home/bastion/MQServer/Advanced/RDQM/PreReqs/el9/drbd-utils-9/*
+<pre><code class="language-R">yum install /home/bastion/MQServer/Advanced/RDQM/PreReqs/el9/drbd-utils-9/*
 </code></pre>
 <p><strong>7. Install Pacemaker</strong></p>
-<pre><code>yum install /home/bastion/MQServer/Advanced/RDQM/PreReqs/el9/pacemaker-2/*
+<pre><code class="language-R">yum install /home/bastion/MQServer/Advanced/RDQM/PreReqs/el9/pacemaker-2/*
 </code></pre>
 <p><strong>8. Accept the license</strong></p>
-<pre><code>/home/bastion/MQServer/mqlicense.sh
+<pre><code class="language-R">/home/bastion/MQServer/mqlicense.sh
 </code></pre>
 <p><strong>9. Install MQ</strong></p>
-<pre><code>cd /home/bastion/MQServer
+<pre><code class="language-R">cd /home/bastion/MQServer
 yum install MQSeriesGSKit* MQSeriesServer* MQSeriesRuntime*
 </code></pre>
 <p><strong>10. Install RDQM</strong></p>
-<pre><code>cd /home/bastion/MQServer
+<pre><code class="language-R">cd /home/bastion/MQServer
 yum install Advanced/RDQM/MQSeriesRDQM*
 </code></pre>
 <h2 id="preparing-vms-for-setup-of-rdqm">Preparing VM’s for setup of RDQM</h2>
@@ -206,80 +206,80 @@ yum install Advanced/RDQM/MQSeriesRDQM*
 <p><strong>Setup the disk volume group for DRBD</strong></p>
 <p>Do this on all 3 VM’s </p>
 <p>Find the disk device.. In my case it was /dev/sbd</p>
-<pre><code>ls /dev/sd*
+<pre><code class="language-R">ls /dev/sd*
 </code></pre>
 <p>Create the PV</p>
-<pre><code>pvcreate /dev/sdb
+<pre><code class="language-R">pvcreate /dev/sdb
 </code></pre>
 <p>Create the Volume Group</p>
-<pre><code>vgcreate drbdpool /dev/sdb
+<pre><code class="language-R">vgcreate drbdpool /dev/sdb
 </code></pre>
 <h2 id="setup-passwordless-ssh-login-on-all-3-vms">Setup Passwordless SSH Login on all 3 VM’s</h2>
 <p><a href="https://www.ibm.com/docs/en/ibm-mq/9.2?topic=solution-setting-up-passwordless-ssh">https://www.ibm.com/docs/en/ibm-mq/9.2?topic=solution-setting-up-passwordless-ssh</a></p>
-<pre><code>usermod -d /home/mqm mqm
+<pre><code class="language-R">usermod -d /home/mqm mqm
 </code></pre>
-<pre><code>mkhomedir_helper mqm
+<pre><code class="language-R">mkhomedir_helper mqm
 </code></pre>
 <p>Set the password</p>
-<pre><code>passwd mqm
+<pre><code class="language-R">passwd mqm
 </code></pre>
-<pre><code>su mqm
+<pre><code class="language-R">su mqm
 </code></pre>
-<pre><code>ssh-keygen -t rsa -f /home/mqm/.ssh/id_rsa -N ''
+<pre><code class="language-R">ssh-keygen -t rsa -f /home/mqm/.ssh/id_rsa -N ''
 </code></pre>
 <p>Copy Keys to all 3 VM's</p>
-<pre><code>ssh-copy-id -i /home/mqm/.ssh/id_rsa.pub &lt;ip address VM1&gt;
+<pre><code class="language-R">ssh-copy-id -i /home/mqm/.ssh/id_rsa.pub &lt;ip address VM1&gt;
 ssh-copy-id -i /home/mqm/.ssh/id_rsa.pub &lt;ip address VM2&gt;
 ssh-copy-id -i /home/mqm/.ssh/id_rsa.pub &lt;ip address VM3&gt;
 </code></pre>
 <p>verify.. On each VM you can access without password</p>
-<pre><code>ssh &lt;ip address VM1&gt;uname -n
+<pre><code class="language-R">ssh &lt;ip address VM1&gt;uname -n
 ssh &lt;ip address VM2&gt;uname -n
 ssh &lt;ip address VM3&gt;uname -n
 </code></pre>
 <p><strong>NOTE</strong>: <em>You may be prompted for fingerprint the first time, so you NEED to TEST.</em></p>
 <p>Do on all machines</p>
 <p>Exit out of mqm user</p>
-<pre><code>exit
+<pre><code class="language-R">exit
 </code></pre>
 <p>Switch to root user</p>
-<pre><code>su
+<pre><code class="language-R">su
 </code></pre>
-<pre><code>passwd -d mqm
+<pre><code class="language-R">passwd -d mqm
 passwd -l mqm
 </code></pre>
 <h2 id="add-mqm-user-to-sudo-file">Add mqm user to sudo file</h2>
 <p>Run this command on all three servers and make the following edits.</p>
-<pre><code>visudo  
+<pre><code class="language-R">visudo  
 </code></pre>
 <p><strong>ADD THE FOLLLOWING LINE BELOW THIS COMMENT</strong></p>
 <p><code>## Allows people in group wheel to run all commands</code></p>
-<pre><code>#%mqm    ALL=(ALL)       ALL
+<pre><code class="language-R">#%mqm    ALL=(ALL)       ALL
 </code></pre>
 <p><strong>ADD THE FOLLLOWING LINE BELOW THIS COMMENT</strong>    </p>
 <p><code>## Same thing without a password</code></p>
-<pre><code>%mqm            ALL=(ALL)       NOPASSWD: ALL
+<pre><code class="language-R">%mqm            ALL=(ALL)       NOPASSWD: ALL
 </code></pre>
 <h2 id="configure-selinux-security">Configure SELINUX Security</h2>
 <p><strong>NOTE</strong>: <em>Run these commands on all machines as ROOT</em></p>
-<pre><code>semanage permissive -a drbd_t
+<pre><code class="language-R">semanage permissive -a drbd_t
 /opt/mqm/samp/rdqm/firewalld/configure.sh
 </code></pre>
 <h2 id="setup-local-dns">Setup local dns</h2>
 <p><strong>NOTE</strong>: <em>Run these commands on all machines as ROOT</em></p>
-<pre><code>vi /etc/hosts
+<pre><code class="language-R">vi /etc/hosts
 </code></pre>
 <p><strong>ADD THIS TO THE FILE</strong></p>
-<pre><code>&lt;ip address VM1&gt; qm1
+<pre><code class="language-R">&lt;ip address VM1&gt; qm1
 &lt;ip address VM2&gt; qm2
 &lt;ip address VM3&gt; qm3
 </code></pre>
 <h2 id="configure-rdmq-ini-file">Configure RDMQ INI File</h2>
 <p><strong>NOTE</strong>: <em>Run these commands on all machines as ROOT</em></p>
-<pre><code>vi /var/mqm/rdqm.ini
+<pre><code class="language-R">vi /var/mqm/rdqm.ini
 </code></pre>
 <p><strong>EDIT FILE LIKE THIS</strong></p>
-<pre><code>    Node:
+<pre><code class="language-R">    Node:
       Name=qm1
          HA_Replication=10.67.42.177
           HA_Primary=10.67.42.177
@@ -299,10 +299,10 @@ passwd -l mqm
         #  DR_Replication=10.67.42.153
 </code></pre>
 <h2 id="configure-pacemaker-group">Configure Pacemaker group</h2>
-<pre><code>/opt/mqm/bin/rdqmadm -c
+<pre><code class="language-R">/opt/mqm/bin/rdqmadm -c
 </code></pre>
 <h2 id="configure-new-rdqm-queuemanager">Configure NEW RDQM QueueManager</h2>
-<pre><code>/opt/mqm/bin/crtmqm -sx qmgrdk1
+<pre><code class="language-R">/opt/mqm/bin/crtmqm -sx qmgrdk1
 
 /opt/mqm/bin/crtmqm -sxs -fs 3072M qmgrdk1
 </code></pre></div>
