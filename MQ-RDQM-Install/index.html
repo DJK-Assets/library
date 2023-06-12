@@ -75,6 +75,8 @@
 <li class="toctree-l3"><a class="nav-item toc" href="#configure-rdmq-ini-file">Configure RDMQ INI File</a></li>
 <li class="toctree-l3"><a class="nav-item toc" href="#configure-pacemaker-group">Configure Pacemaker group</a></li>
 <li class="toctree-l3"><a class="nav-item toc" href="#configure-new-rdqm-queuemanager">Configure NEW RDQM QueueManager</a></li>
+<li class="toctree-l3"><a class="nav-item toc" href="#disable-secure-boot">Disable Secure boot</a></li>
+<li class="toctree-l3"><a class="nav-item toc" href="#configure-floating-ip-address">Configure Floating IP Address</a></li>
 </ul></li>
 </ul></li>
                 </ul>
@@ -115,15 +117,15 @@
 </ul>
 <h2 id="sites-of-interest">Sites of Interest</h2>
 <ul>
-<li><a href="">https://www.ibm.com/docs/en/ibm-mq/9.3?topic=configurations-rdqm-high-availability</a></li>
-<li><a href="">https://www.royalcyber.com/blog/middleware/high-availability-of-replicated-data-queue-manager/</a></li>
+<li><a href="https://www.ibm.com/docs/en/ibm-mq/9.3?topic=configurations-rdqm-high-availability">https://www.ibm.com/docs/en/ibm-mq/9.3?topic=configurations-rdqm-high-availability</a></li>
+<li><a href="https://www.royalcyber.com/blog/middleware/high-availability-of-replicated-data-queue-manager/">https://www.royalcyber.com/blog/middleware/high-availability-of-replicated-data-queue-manager/</a></li>
 </ul>
 <p><strong>Preparing for RDQM</strong></p>
 <ul>
-<li><a href="">https://www.ibm.com/docs/en/ibm-mq/9.3?topic=configurations-rdqm-high-availability</a></li>
-<li><a href="">https://community.ibm.com/community/user/integration/blogs/prema-laxmanachar1/2022/08/10/detailed-procedure-of-migrating-regular-ibm-mq-que</a></li>
-<li><a href="">https://www.ibm.com/docs/en/ibm-mq/9.3?topic=availability-requirements-rdqm-ha-solution</a></li>
-<li><a href="">https://www.redhat.com/sysadmin/create-physical-volume</a></li>
+<li><a href="https://www.ibm.com/docs/en/ibm-mq/9.3?topic=configurations-rdqm-high-availability">https://www.ibm.com/docs/en/ibm-mq/9.3?topic=configurations-rdqm-high-availability</a></li>
+<li><a href="https://community.ibm.com/community/user/integration/blogs/prema-laxmanachar1/2022/08/10/detailed-procedure-of-migrating-regular-ibm-mq-que">https://community.ibm.com/community/user/integration/blogs/prema-laxmanachar1/2022/08/10/detailed-procedure-of-migrating-regular-ibm-mq-que</a></li>
+<li><a href="https://www.ibm.com/docs/en/ibm-mq/9.3?topic=availability-requirements-rdqm-ha-solution">https://www.ibm.com/docs/en/ibm-mq/9.3?topic=availability-requirements-rdqm-ha-solution</a></li>
+<li><a href="https://www.redhat.com/sysadmin/create-physical-volume">https://www.redhat.com/sysadmin/create-physical-volume</a></li>
 </ul>
 <h2 id="general-commands-that-were-of-use-during-my-attempts-to-install">General Commands that were of use during my attempts to install</h2>
 <pre><code>yum upgrade 
@@ -303,9 +305,28 @@ passwd -l mqm
 <pre><code class="language-R">/opt/mqm/bin/rdqmadm -c
 </code></pre>
 <h2 id="configure-new-rdqm-queuemanager">Configure NEW RDQM QueueManager</h2>
-<pre><code class="language-R">/opt/mqm/bin/crtmqm -sx qmgrdk1
+<pre><code class="language-R">/opt/mqm/bin/crtmqm -sx qmgrdk3
 
 /opt/mqm/bin/crtmqm -sxs -fs 3072M qmgrdk1
+</code></pre>
+<h2 id="disable-secure-boot">Disable Secure boot</h2>
+<p><a href="https://access.redhat.com/solutions/6955734">https://access.redhat.com/solutions/6955734</a></p>
+<pre><code class="language-R">/usr/bin/mokutil --disable-validation
+</code></pre>
+<p><strong>NOTE:</strong>  <em>Take note of the password you set</em></p>
+<pre><code class="language-R">shutdown -h now
+</code></pre>
+<p><strong>Modify the settings on the VM in VSphere</strong> 
+<em>Uncheck the secure boot check box in the boot options.</em> </p>
+<p><strong>Validate that is't not on.</strong></p>
+<pre><code>/usr/bin/mokutil --sb-state
+</code></pre>
+<h2 id="configure-floating-ip-address">Configure Floating IP Address</h2>
+<p><a href="https://www.ibm.com/docs/en/ibm-mq/9.3?topic=availability-creating-deleting-floating-ip-address">https://www.ibm.com/docs/en/ibm-mq/9.3?topic=availability-creating-deleting-floating-ip-address</a></p>
+<p><strong>NOTE:</strong> <em>You will need to to have the network card id. You can find that by issuing the following command.</em></p>
+<pre><code class="language-R">ifconfig
+</code></pre>
+<pre><code class="language-R">/opt/mqm/bin/rdqmint -m qmgrdk3 -a  -f &lt;Floating IP Address&gt; -l ens192
 </code></pre></div>
                 <footer>
     <div class="footer-buttons">
