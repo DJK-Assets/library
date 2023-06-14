@@ -41,34 +41,31 @@
                     <li class="toctree-l1"><a class="nav-item" href="..">Home</a></li>
                     <li class="toctree-l1"><button class="section nav-item">OpenShift</button>
 <ul class="subnav">
-    <li class="toctree-l2">
-<a class="nav-item" href="../skills-needed/">Skills Needed for Install</a></li>
-    <li class="toctree-l2">
-<a class="nav-item" href="../IPI-Step-by-Step/">IPI Install step by step</a></li>
-    <li class="toctree-l2">
-<a class="nav-item" href="../Bring-Your-Own-VPC/">Bring your own VPC</a></li>
-    <li class="toctree-l2">
-<a class="nav-item" href="../DNS-Networking/">DNS Networking</a></li>
-    <li class="toctree-l2">
-<a class="nav-item" href="../Enabling-Certs/">Enabling Certs</a></li>
-    <li class="toctree-l2">
-<a class="nav-item" href="../Troubleshooting-Install/">Troubleshooting Install</a></li>
+    <li class="toctree-l2"><a class="nav-item" href="../skills-needed/">Skills Needed for Install</a></li>
 </ul></li>
                     <li class="toctree-l1"><button class="section nav-item">General</button>
 <ul class="subnav">
-    <li class="toctree-l2 current">
-<a class="nav-item current" href="./">Setup MKDocs</a>
+    <li class="toctree-l2 current"><a class="nav-item current" href="./">Setup MKDocs</a>
 <ul class="subnav">
+<li class="toctree-l3"><a class="nav-item toc" href="#install-mkdocs">Install MKDocs</a></li>
+<li class="toctree-l3"><a class="nav-item toc" href="#material-theme-documentation">Material Theme Documentation</a></li>
+<li class="toctree-l3"><a class="nav-item toc" href="#you-need-a-personal-access-token-from-github-this-is-super-simple">You need a "Personal Access Token" from Github. (This is super simple).</a></li>
+<li class="toctree-l3"><a class="nav-item toc" href="#clone-this-repo-in-github">Clone this repo in Github.</a></li>
+<li class="toctree-l3"><a class="nav-item toc" href="#mkdocs-user-guide-modifying-the-site">MKDocs User Guide - Modifying the site</a></li>
 </ul></li>
 </ul></li>
                     <li class="toctree-l1"><button class="section nav-item">MQ</button>
 <ul class="subnav">
     <li class="toctree-l2"><a class="nav-item" href="../MQ-RDQM-Install/">RDQM HA Install</a></li>
 </ul></li>
+                    <li class="toctree-l1"><button class="section nav-item">CP4D</button>
+<ul class="subnav">
+    <li class="toctree-l2"><a class="nav-item" href="../CP4D_Upgrade/">CP4D Upgrade Steps</a></li>
+</ul></li>
                 </ul>
             </nav>
             <div class="repo">
-    <div class="previous"><a href="../Troubleshooting-Install/">&laquo; Previous</a></div>
+    <div class="previous"><a href="../skills-needed/">&laquo; Previous</a></div>
     <div class="next"><a href="../MQ-RDQM-Install/">Next &raquo;</a></div>
 </div>
         </aside>
@@ -84,10 +81,83 @@
     <li>General</li>
 </ul>
 </nav>
-                <div id="content"></div>
+                <div id="content"><h1 id="mkdocs-install-configuration">MKDOCS Install &amp; Configuration</h1>
+<p>This site uses MKDocs for the publishing of the "GitHub Pages" site</p>
+<p>You MUST install both MKDocs and the Material Theme.</p>
+<p>Here is how you setup your machine to edit the documentation hosted on the Github Pages Site. Details of these steps are below.</p>
+<p><strong>Outline of the steps you will take</strong></p>
+<ol>
+<li>Install MKdocs</li>
+<li>Install the MKdocs Theme (Material)</li>
+<li>Get a Personal Access Token from GitHub</li>
+<li>Clone this repository</li>
+<li>Make your changes (Feel free to reach out to Dave Krier or Kyle Dawson for help on how to use MKDocs)</li>
+<li>Deploy your changes</li>
+</ol>
+<h2 id="install-mkdocs">Install MKDocs</h2>
+<p><a href="https://www.mkdocs.org/user-guide/installation/">Here is the installation documentation for MKDocs</a></p>
+<p>Install the MKDocs theme
+Install guidance is on the Material theme page.</p>
+<p><a href="https://squidfunk.github.io/mkdocs-material/getting-started/">Material Theme - Quick Start</a></p>
+<h2 id="material-theme-documentation">Material Theme Documentation</h2>
+<pre><code>pip3 install mkdocs-material
+</code></pre>
+<p>You can check the version of Material you currently have installed with this command. </p>
+<pre><code>python3 -m pip list
+</code></pre>
+<p>If you have any issues with the pip install, you may need to perform an uninstall and reinstall. </p>
+<pre><code>pip3 uninstall  mkdocs-material
+pip3 install  mkdocs-material
+
+pip3 uninstall mkdocs
+pip3 install mkdocs
+</code></pre>
+<p><a href="https://squidfunk.github.io/mkdocs-material/reference/admonitions/">Link to the Material Theme Documentation</a></p>
+<h2 id="you-need-a-personal-access-token-from-github-this-is-super-simple">You need a "Personal Access Token" from Github. (This is super simple).</h2>
+<p>Why do I need this? You need this because you need to be able to push changes back into the github repository.</p>
+<p>Here is a Github doc page you can look at for help if the steps below do not make sense.</p>
+<ol>
+<li>Login to Github.</li>
+<li>Click on your user icon in the upper right hand corner</li>
+<li>Select Settings --&gt; Developer Settings --&gt; Personal Access Tokens</li>
+<li>Generate a new token with only these prevliages<ul>
+<li>Repo:Status</li>
+<li>Repo-Deployment</li>
+<li>Public-Repo</li>
+<li>Take note of the access key (It's the only time you will see it)</li>
+</ul>
+</li>
+</ol>
+<p>!!! important </p>
+<pre><code>You will use this Access Token as your password when using the gh-deploy mkdocs command.
+</code></pre>
+<h2 id="clone-this-repo-in-github">Clone this repo in Github.</h2>
+<p>I assume you will all know how to do that!!</p>
+<h2 id="mkdocs-user-guide-modifying-the-site">MKDocs User Guide - Modifying the site</h2>
+<p><a href="https://www.mkdocs.org/user-guide/writing-your-docs/#writing-your-docs">MKDocs Documentation</a></p>
+<p>Deploying your changes.</p>
+<ol>
+<li>
+<p>Navigate to your cloned repo directory in a terminal window.</p>
+<p><em>You must be inside the /daffydoc directory to run the following commands.</em></p>
+</li>
+<li>
+<p>Build the files using the build command</p>
+</li>
+</ol>
+<pre><code>mkdocs build
+</code></pre>
+<ol>
+<li>Deploy the newly built files to the Github Pages site </li>
+</ol>
+<p>!!! note inline end</p>
+<pre><code>This is where you will use the access token from Github. Use the access     token instead of your password.
+</code></pre>
+<pre><code>mkdocs gh-deploy
+</code></pre></div>
                 <footer>
     <div class="footer-buttons">
-        <div class="previous"><a href="../Troubleshooting-Install/" title="Troubleshooting Install"><span>Previous</span></a></div>
+        <div class="previous"><a href="../skills-needed/" title="Skills Needed for Install"><span>Previous</span></a></div>
         <div class="next"><a href="../MQ-RDQM-Install/" title="RDQM HA Install"><span>Next</span></a></div>
     </div>
     <div class="footer-note">
