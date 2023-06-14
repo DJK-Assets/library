@@ -4,13 +4,11 @@ nav:
 - Home: index.md
 - OpenShift:
   - Skills Needed for Install: skills-needed.md
-  - IPI Install step by step: IPI-Step-by-Step.md
-  - Bring your own VPC: Bring-Your-Own-VPC.md
-  - DNS Networking: DNS-Networking.md
-  - Enabling Certs: Enabling-Certs.md
-  - Troubleshooting Install: Troubleshooting-Install.md
 - General:
   - Setup MKDocs: mkdocs-setup.md
 - MQ:
   - RDQM HA Install: MQ-RDQM-Install.md
+- CP4D:
+  - CP4D Upgrade Steps: CP4D_Upgrade.md
+
   
