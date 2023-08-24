@@ -6,16 +6,14 @@ This is an example to demonstrate the configuration and setup for the IBM MQ Que
 
 ## Prerequisites 
 
-* IBM MQ Service deployed with a running queue manager (Instructions)
-* TLS Channel Security (Reference Material)
+* IBM MQ Service deployed with a running queue manager ([Instructions](https://cloud.ibm.com/docs/mqcloud?topic=mqcloud-mqoc_create_qm))
+* TLS Channel Security ([Reference Material](https://cloud.ibm.com/docs/mqcloud?topic=mqcloud-mqoc_configure_chl_ssl))
 
-!!! note
-    
-    IBM Cloud MQ Service queue manager channels have been pre-configured with TLS. If this is a NEW deployment, you will not need to configure TLS security on the channels.
+**Note:** *IBM Cloud MQ Service queue manager channels have been pre-configured with TLS. If this is a NEW deployment, you will not need to configure TLS security on the channels.*
 
 * MQ Client must be installed on your local workstation (or the location where you plan to run the client app)
-* For macOS, follow the steps in the MQ macOS Toolkit tutorial.
-* For Windows or Linux MQ clients, download and install one from the IBM Support site.
+* For macOS, follow the steps in the ([MQ macOS Toolkit tutorial](https://developer.ibm.com/tutorials/mq-macos-dev)).
+* For Windows or Linux MQ clients, download and install one from the ([IBM Support site](https://www.ibm.com/support/pages/node/712701)).
 *  Python (The example application is based on Python). You will need to have Python installed on your machine to run the sample application. 
 
 ## Download the TLS Certificate and connection information from your queue manager
@@ -37,9 +35,7 @@ This is an example to demonstrate the configuration and setup for the IBM MQ Que
 
 ![](images/PY_MQ_TLS/4.png)
 
-!!! note
-    
-    You can choose the format to download. I selected plain text in my example. 
+**Note:** *You can choose the format to download. I selected plain text in my example.*
 
 ![](images/PY_MQ_TLS/5.png)
 
@@ -52,13 +48,11 @@ This is an example to demonstrate the configuration and setup for the IBM MQ Que
 
 ## Create application userid/apikey
 
-Look here for more detailed information on how to setup userid and api key. (Instructions)
+Look here for more detailed information on how to setup userid and api key. ([Instructions](https://cloud.ibm.com/docs/mqcloud?topic=mqcloud-mqoc_configure_app_qm_access))
 
 Our sample will use a pre-defined queue, so the authorization record has been automatically configured. See below instructions on how to configure authorization to a custom queue. 
 
-!!! Note
-
-    If you do not intend to use one of the predefined 'DEV.QUEUE.' queues to put and get messages, follow the Assigning user/group access to a queue guide to configure the authorization record required for this queue.
+**Note:** *If you do not intend to use one of the predefined 'DEV.QUEUE.' queues to put and get messages, follow the ([Assigning user/group access to a queue](https://cloud.ibm.com/docs/services/mqcloud?topic=mqcloud-mqoc_configure_auth_record)) guide to configure the authorization record required for this queue.*
 
 Below are the steps that I took to create a userid / apikey. 
 
@@ -74,9 +68,7 @@ Below are the steps that I took to create a userid / apikey.
 
 ![](images/PY_MQ_TLS/9.png)
 
-!!! IMPORTANT
-
-    You will ONLY see the API KEY ONE TIME!!  Take note of this.. !! 
+**IMPORTANT:** *You will ONLY see the API KEY ONE TIME!!  Take note of this.. !!*
 
 ![](images/PY_MQ_TLS/10.png)
 
@@ -92,11 +84,9 @@ For this next step, we need to create a keystore file and add our certificate in
 2.	Create the keystore with this command below. 
 
 
-!!! note 
+**Note:** *This command line tool is part of the MQ Developers Kit*
 
-    This command line tool is part of the MQ Developers Kit
-
-```runmqakm -keydb -create -db <keystorename>.kdb -pw <password> -type pkcs12 -expire 1000 -stash```
+    runmqakm -keydb -create -db <keystorename>.kdb -pw <password> -type pkcs12 -expire 1000 -stash
 
 •	**keystorename**  - You can name your keystore any name you wish
 •	**password**  -  You can set the password for the keystore to anything you wish
@@ -108,11 +98,9 @@ For this next step, we need to create a keystore file and add our certificate in
 3.	Add the PEM (certificate) to the keystore with this command below.
 
 
-!!! note 
+**Note** *This command line tool is part of the MQ Developers Kit*
 
-    This command line tool is part of the MQ Developers Kit
-
-```runmqakm -cert -add -label <yourlabel> -db <keystorename>.kdb -stashed -trust enable -file <pemfilename>.pem```
+    runmqakm -cert -add -label <yourlabel> -db <keystorename>.kdb -stashed -trust enable -file <pemfilename>.pem
 
 •	**yourlabel**  -  You can add any label you like here, but I recommend using the same name as your keystorename
 •	**keystorename**  -  This must match the keystore name you created in the first command. 
@@ -142,54 +130,52 @@ The Python “pymqi” library requires you to have the MQ Client installed. Thi
 
 If you are running these on a linux or Mac machine you can set these variables via the command line using these commands. 
 
-```
-export DYLD_LIBRARY_PATH=/opt/mqm/lib64
-export MQ_INSTALLATION_PATH=/opt/mqm
-```
+
+    export DYLD_LIBRARY_PATH=/opt/mqm/lib64
+    export MQ_INSTALLATION_PATH=/opt/mqm
+
 
 The PATH environment variable should include the mqm libraries. Add these directories to your path. . 
 
-```
-/opt/mqm/bin:/opt/mqm/lib64:/opt/mqm/samp/bin
-```
+
+    /opt/mqm/bin:/opt/mqm/lib64:/opt/mqm/samp/bin
+
 
 Below is the sample Python Application. We will need to use the connection information that was downloaded from a previous step to populate the values for the connection. 
 
 We will also need to reference the keystore file and set the userid / password (api key) 
 
-```
-import pymqi
+    import pymqi
 
-import logging
+    import logging
 
-queue_manager = 'myqm'
-queue_name = 'DEV.QUEUE.1'
-message = 'Hello from Python! - This is Dave Krier'
+    queue_manager = 'myqm'
+    queue_name = 'DEV.QUEUE.1'
+    message = 'Hello from Python! - This is Dave Krier'
 
-cd = pymqi.CD()
-cd.ChannelName = b'CLOUD.ADMIN.SVRCONN'
-cd.ConnectionName = b'myqm-4e4a.qm.us-south.mq.appdomain.cloud(30000)'
-cd.ChannelType = pymqi.CMQC.MQCHT_CLNTCONN
-cd.TransportType = pymqi.CMQC.MQXPT_TCP
-cd.SSLCipherSpec = b'ANY_TLS12_OR_HIGHER'
-sco = pymqi.SCO()
-sco.KeyRepository = b'./qmgrcert' # include file name but not file extension
+    cd = pymqi.CD()
+    cd.ChannelName = b'CLOUD.ADMIN.SVRCONN'
+    cd.ConnectionName = b'myqm-4e4a.qm.us-south.mq.appdomain.cloud(30000)'
+    cd.ChannelType = pymqi.CMQC.MQCHT_CLNTCONN
+    cd.TransportType = pymqi.CMQC.MQXPT_TCP
+    cd.SSLCipherSpec = b'ANY_TLS12_OR_HIGHER'
+    sco = pymqi.SCO()
+    sco.KeyRepository = b'./qmgrcert' # include file name but not file extension
 
-qmgr = pymqi.QueueManager(None)
-qmgr.connect_with_options(queue_manager, user='davetest', password='F-5QDP8lO_cI0j7521wEchXxzd2Yv7DeA_gPqa28ASBx', cd=cd, sco=sco)
+    qmgr = pymqi.QueueManager(None)
+    qmgr.connect_with_options(queue_manager, user='davetest', password='F-5QDP8lO_cI0j7521wEchXxzd2Yv7DeA_gPqa28ASBx', cd=cd, sco=sco)
 
-put_queue = pymqi.Queue(qmgr, queue_name)
-put_queue.put(message)
+    put_queue = pymqi.Queue(qmgr, queue_name)
+    put_queue.put(message)
 
-get_queue = pymqi.Queue(qmgr, queue_name)
-print(get_queue.get())
+    get_queue = pymqi.Queue(qmgr, queue_name)
+    print(get_queue.get())
 
-put_queue.close()
-get_queue.close()
+    put_queue.close()
+    get_queue.close()
 
-qmgr.disconnect()
+    qmgr.disconnect()
 
-```
 
 ## References
 
