@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="../img/favicon.ico">
+    <title>IBM CLoud MQ - TLS &mdash; DJKal Library</title>
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:400,700">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/tonsky/FiraCode@1.206/distr/fira_code.css">
+    <link rel="stylesheet" href="//use.fontawesome.com/releases/v5.8.1/css/all.css">
+    <link rel="stylesheet" href="//use.fontawesome.com/releases/v5.8.1/css/v4-shims.css">
+    <link rel="stylesheet" href="../css/theme.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+    <script src="//code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+    <script>
+        hljs.initHighlightingOnLoad();
+    </script> 
+</head>
+
+<body ontouchstart="">
+    <div id="container">
+        <aside>
+            <div class="home">
+                <div class="title">
+                    <button class="hamburger"></button>
+                    <a href=".." class="site-name"> DJKal Library</a>
+                </div>
+                <div class="search">
+                    <div role="search">
+    <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+        <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+    </form>
+</div>
+                </div>
+            </div>
+            <nav class="nav">
+                <ul class="root">
+                    <li class="toctree-l1"><a class="nav-item" href="..">Home</a></li>
+                    <li class="toctree-l1"><button class="section nav-item">OpenShift</button>
+<ul class="subnav">
+    <li class="toctree-l2"><a class="nav-item" href="../skills-needed/">Skills Needed for Install</a></li>
+</ul></li>
+                    <li class="toctree-l1"><button class="section nav-item">General</button>
+<ul class="subnav">
+    <li class="toctree-l2"><a class="nav-item" href="../mkdocs-setup/">Setup MKDocs</a></li>
+</ul></li>
+                    <li class="toctree-l1"><button class="section nav-item">MQ</button>
+<ul class="subnav">
+    <li class="toctree-l2"><a class="nav-item" href="../MQ-RDQM-Install/">RDQM HA Install</a></li>
+    <li class="toctree-l2 current"><a class="nav-item current" href="./">IBM CLoud MQ - TLS</a>
+<ul class="subnav">
+<li class="toctree-l3"><a class="nav-item toc" href="#prerequisites">Prerequisites</a></li>
+<li class="toctree-l3"><a class="nav-item toc" href="#download-the-tls-certificate-and-connection-information-from-your-queue-manager">Download the TLS Certificate and connection information from your queue manager</a></li>
+<li class="toctree-l3"><a class="nav-item toc" href="#create-application-useridapikey">Create application userid/apikey</a></li>
+<li class="toctree-l3"><a class="nav-item toc" href="#create-the-keystore-for-the-client-connection">Create the keystore for the client connection</a></li>
+<li class="toctree-l3"><a class="nav-item toc" href="#test-connectivity">Test connectivity</a></li>
+<li class="toctree-l3"><a class="nav-item toc" href="#references">References</a></li>
+</ul></li>
+</ul></li>
+                    <li class="toctree-l1"><button class="section nav-item">CP4D</button>
+<ul class="subnav">
+    <li class="toctree-l2"><a class="nav-item" href="../CP4D_Upgrade/">CP4D Upgrade Steps</a></li>
+</ul></li>
+                </ul>
+            </nav>
+            <div class="repo">
+    <div class="previous"><a href="../MQ-RDQM-Install/">&laquo; Previous</a></div>
+    <div class="next"><a href="../CP4D_Upgrade/">Next &raquo;</a></div>
+</div>
+        </aside>
+        <div id="spacer"><button class="arrow"></button></div>
+        <main>
+            <div class="home-top">
+                <button class="hamburger"></button>
+                <a href=".." class="site-name"> DJKal Library</a>
+            </div>
+            <div id="main">
+                <nav class="breadcrumbs">
+<ul>
+    <li>MQ</li>
+</ul>
+</nav>
+                <div id="content"><h1 id="ibm-mq-cloud-setup-configuration-to-run-a-sample-application">IBM MQ Cloud – Setup &amp; configuration to run a sample application</h1>
+<p><a href="../pdf/IBM%20MQ%20Cloud%20-%20Tutorial%20Python%20TLS%20Connection.pdf">Download Instructions</a></p>
+<p>This is an example to demonstrate the configuration and setup for the IBM MQ Queue Manager and the TLS security requirements to connect.  While the sample application in this demonstration is Python, the same steps can be used for any other supported application programming language.  </p>
+<h2 id="prerequisites">Prerequisites</h2>
+<ul>
+<li>IBM MQ Service deployed with a running queue manager (Instructions)</li>
+<li>TLS Channel Security (Reference Material)</li>
+</ul>
+<p>!!! note</p>
+<pre><code>IBM Cloud MQ Service queue manager channels have been pre-configured with TLS. If this is a NEW deployment, you will not need to configure TLS security on the channels.
+</code></pre>
+<ul>
+<li>MQ Client must be installed on your local workstation (or the location where you plan to run the client app)</li>
+<li>For macOS, follow the steps in the MQ macOS Toolkit tutorial.</li>
+<li>For Windows or Linux MQ clients, download and install one from the IBM Support site.</li>
+<li>Python (The example application is based on Python). You will need to have Python installed on your machine to run the sample application. </li>
+</ul>
+<h2 id="download-the-tls-certificate-and-connection-information-from-your-queue-manager">Download the TLS Certificate and connection information from your queue manager</h2>
+<ol>
+<li>Log into your IBM Cloud account and navigate to your  “IBM MQ Service”. You can find your services  in the resource list. </li>
+<li>Select the queue manager you wish to connect to. </li>
+</ol>
+<p><img alt="" src="../images/PY_MQ_TLS/1.png" /></p>
+<ol>
+<li>Select the Key store tab, to display the certificates associated with your queue manager. </li>
+<li>Download the certificate by selecting the 3 dots on the certificate and selecting the “Download public certificate” button. </li>
+</ol>
+<p><img alt="" src="../images/PY_MQ_TLS/2.png" /></p>
+<p><img alt="" src="../images/PY_MQ_TLS/3.png" /></p>
+<ol>
+<li>Copy the downloaded PEM file to your project folder, where you will run the application from. </li>
+<li>Download the connection information for your queue manager by selecting the “Connection Information” button. </li>
+</ol>
+<p><img alt="" src="../images/PY_MQ_TLS/4.png" /></p>
+<p>!!! note</p>
+<pre><code>You can choose the format to download. I selected plain text in my example.
+</code></pre>
+<p><img alt="" src="../images/PY_MQ_TLS/5.png" /></p>
+<ol>
+<li>Inspect the connection information. We will need the information outlined in red for connection to our queue manager. </li>
+</ol>
+<p><img alt="" src="../images/PY_MQ_TLS/6.png" /></p>
+<p><strong>TASK COMPLETE</strong>
+<em>You now have all the information you need to connect to this queue manager</em></p>
+<h2 id="create-application-useridapikey">Create application userid/apikey</h2>
+<p>Look here for more detailed information on how to setup userid and api key. (Instructions)</p>
+<p>Our sample will use a pre-defined queue, so the authorization record has been automatically configured. See below instructions on how to configure authorization to a custom queue. </p>
+<p>!!! Note</p>
+<pre><code>If you do not intend to use one of the predefined 'DEV.QUEUE.' queues to put and get messages, follow the Assigning user/group access to a queue guide to configure the authorization record required for this queue.
+</code></pre>
+<p>Below are the steps that I took to create a userid / apikey. </p>
+<ol>
+<li>On the main IBM MQ Service screen, select “Application Credentials” </li>
+</ol>
+<p><img alt="" src="../images/PY_MQ_TLS/7.png" /></p>
+<ol>
+<li>Select the “Add” button to create a NEW set of application credentials </li>
+</ol>
+<p><img alt="" src="../images/PY_MQ_TLS/8.png" /></p>
+<ol>
+<li>Fill out the information and select “Add and generate API Key” </li>
+</ol>
+<p><img alt="" src="../images/PY_MQ_TLS/9.png" /></p>
+<p>!!! IMPORTANT</p>
+<pre><code>You will ONLY see the API KEY ONE TIME!!  Take note of this.. !!
+</code></pre>
+<p><img alt="" src="../images/PY_MQ_TLS/10.png" /></p>
+<p><strong>TASK COMPLETE</strong>
+<em>This will be the Userid &amp; Password used to authenticate to the queue manager.</em></p>
+<h2 id="create-the-keystore-for-the-client-connection">Create the keystore for the client connection</h2>
+<p>For this next step, we need to create a keystore file and add our certificate information to the keystore. </p>
+<ol>
+<li>
+<p>Copy the downloaded PEM file (containing the cert) to your project directory. This was downloaded from the IBM Cloud QM Service page in a previous step. </p>
+</li>
+<li>
+<p>Create the keystore with this command below. </p>
+</li>
+</ol>
+<p>!!! note </p>
+<pre><code>This command line tool is part of the MQ Developers Kit
+</code></pre>
+<p><code>runmqakm -keydb -create -db &lt;keystorename&gt;.kdb -pw &lt;password&gt; -type pkcs12 -expire 1000 -stash</code></p>
+<p>•   <strong>keystorename</strong>  - You can name your keystore any name you wish
+•   <strong>password</strong>  -  You can set the password for the keystore to anything you wish</p>
+<p><strong>My Example</strong></p>
+<p><code>/opt/mqm/bin/runmqakm -keydb -create -db qmgrcert.kdb -pw password -type pkcs12 -expire 1000 -stash</code></p>
+<ol>
+<li>Add the PEM (certificate) to the keystore with this command below.</li>
+</ol>
+<p>!!! note </p>
+<pre><code>This command line tool is part of the MQ Developers Kit
+</code></pre>
+<p><code>runmqakm -cert -add -label &lt;yourlabel&gt; -db &lt;keystorename&gt;.kdb -stashed -trust enable -file &lt;pemfilename&gt;.pem</code></p>
+<p>•   <strong>yourlabel</strong>  -  You can add any label you like here, but I recommend using the same name as your keystorename
+•   <strong>keystorename</strong>  -  This must match the keystore name you created in the first command. 
+•   <strong>pemfilename</strong> -  This must match the name of your pem file (should be in the same directory where your running this command. </p>
+<p><strong>My Example</strong> </p>
+<p><code>/opt/mqm/bin/runmqakm -cert -add -label qmgrcertnew1 -db qmgrcertnew1.kdb -stashed -trust enable -file qmgrcert.pem</code>
+ 
+4.  Verify that you have the generated kdb and sth files </p>
+<p>You should see two new files that were generated by these 2 commands above. 
+•   keystorname.kdb
+•   keystorename.sth</p>
+<p><strong>TASK COMPLETE</strong></p>
+<p><em>We will use the keystore files to connect to the queue manager via a channel that is TLS enabled.</em> </p>
+<h2 id="test-connectivity">Test connectivity</h2>
+<p>The Python “pymqi” library requires you to have the MQ Client installed. This python library is a wrapper to the C client libraries loaded with the MQ Client. We MUST have these environment variables set. </p>
+<p><img alt="" src="../images/PY_MQ_TLS/11.png" /></p>
+<p>If you are running these on a linux or Mac machine you can set these variables via the command line using these commands. </p>
+<pre><code>export DYLD_LIBRARY_PATH=/opt/mqm/lib64
+export MQ_INSTALLATION_PATH=/opt/mqm
+</code></pre>
+<p>The PATH environment variable should include the mqm libraries. Add these directories to your path. . </p>
+<pre><code>/opt/mqm/bin:/opt/mqm/lib64:/opt/mqm/samp/bin
+</code></pre>
+<p>Below is the sample Python Application. We will need to use the connection information that was downloaded from a previous step to populate the values for the connection. </p>
+<p>We will also need to reference the keystore file and set the userid / password (api key) </p>
+<pre><code>import pymqi
+
+import logging
+
+queue_manager = 'myqm'
+queue_name = 'DEV.QUEUE.1'
+message = 'Hello from Python! - This is Dave Krier'
+
+cd = pymqi.CD()
+cd.ChannelName = b'CLOUD.ADMIN.SVRCONN'
+cd.ConnectionName = b'myqm-4e4a.qm.us-south.mq.appdomain.cloud(30000)'
+cd.ChannelType = pymqi.CMQC.MQCHT_CLNTCONN
+cd.TransportType = pymqi.CMQC.MQXPT_TCP
+cd.SSLCipherSpec = b'ANY_TLS12_OR_HIGHER'
+sco = pymqi.SCO()
+sco.KeyRepository = b'./qmgrcert' # include file name but not file extension
+
+qmgr = pymqi.QueueManager(None)
+qmgr.connect_with_options(queue_manager, user='davetest', password='F-5QDP8lO_cI0j7521wEchXxzd2Yv7DeA_gPqa28ASBx', cd=cd, sco=sco)
+
+put_queue = pymqi.Queue(qmgr, queue_name)
+put_queue.put(message)
+
+get_queue = pymqi.Queue(qmgr, queue_name)
+print(get_queue.get())
+
+put_queue.close()
+get_queue.close()
+
+qmgr.disconnect()
+
+</code></pre>
+<h2 id="references">References</h2>
+<p>•   https://developer.ibm.com/tutorials/mq-secure-msgs-tls/#step-1-create-tls-objects
+•   https://stackoverflow.com/questions/14010551/how-to-convert-between-bytes-and-strings-in-python-3
+•   https://cloud.ibm.com/docs/mqcloud?topic=mqcloud-mqoc_connect_app_qm
+•   https://zato.io/pymqi/examples.html
+•   https://developer.ibm.com/learningpaths/ibm-mq-badge/</p></div>
+                <footer>
+    <div class="footer-buttons">
+        <div class="previous"><a href="../MQ-RDQM-Install/" title="RDQM HA Install"><span>Previous</span></a></div>
+        <div class="next"><a href="../CP4D_Upgrade/" title="CP4D Upgrade Steps"><span>Next</span></a></div>
+    </div>
+    <div class="footer-note">
+        <p>
+            Built with <a href="http://www.mkdocs.org">MkDocs</a> using
+            <a href="https://github.com/daizutabi/mkdocs-ivory">Ivory theme</a>.
+        </p>
+    </div>
+</footer>
+            </div>
+        </main>
+    </div>
+    <script>var base_url = '..';</script>
+    <script src="../js/theme.js"></script>
+    <script src="../search/main.js"></script>
+</body>
+
+</html>
