@@ -8,6 +8,7 @@ nav:
   - Setup MKDocs: mkdocs-setup.md
 - MQ:
   - RDQM HA Install: MQ-RDQM-Install.md
+  - IBM CLoud MQ - TLS: IBMCloud_MQ_Python_TLS.md
 - CP4D:
   - CP4D Upgrade Steps: CP4D_Upgrade.md
 
