@@ -101,18 +101,18 @@
 <h2 id="download-the-tls-certificate-and-connection-information-from-your-queue-manager">Download the TLS Certificate and connection information from your queue manager</h2>
 <p>1-  Log into your IBM Cloud account and navigate to your  “IBM MQ Service”. You can find your services  in the resource list. 
 2-  Select the queue manager you wish to connect to. </p>
-<p><img alt="" src="images/PY_MQ_TLS/1.png" /></p>
+<p><img alt="" src="../../images/PY_MQ_TLS/1.png" /></p>
 <p>3-  Select the Key store tab, to display the certificates associated with your queue manager. 
 4-  Download the certificate by selecting the 3 dots on the certificate and selecting the “Download public certificate” button. </p>
-<p><img alt="" src="images/PY_MQ_TLS/2.png" /></p>
-<p><img alt="" src="images/PY_MQ_TLS/3.png" /></p>
+<p><img alt="" src="../../images/PY_MQ_TLS/2.png" /></p>
+<p><img alt="" src="../../images/PY_MQ_TLS/3.png" /></p>
 <p>5-  Copy the downloaded PEM file to your project folder, where you will run the application from. 
 6-  Download the connection information for your queue manager by selecting the “Connection Information” button. </p>
-<p><img alt="" src="images/PY_MQ_TLS/4.png" /></p>
+<p><img alt="" src="../../images/PY_MQ_TLS/4.png" /></p>
 <p><strong>Note:</strong> <em>You can choose the format to download. I selected plain text in my example.</em></p>
-<p><img alt="" src="images/PY_MQ_TLS/5.png" /></p>
+<p><img alt="" src="../../images/PY_MQ_TLS/5.png" /></p>
 <p>7-  Inspect the connection information. We will need the information outlined in red for connection to our queue manager. </p>
-<p><img alt="" src="images/PY_MQ_TLS/6.png" /></p>
+<p><img alt="" src="../../images/PY_MQ_TLS/6.png" /></p>
 <p><strong>TASK COMPLETE</strong>
 <em>You now have all the information you need to connect to this queue manager</em></p>
 <h2 id="create-application-useridapikey">Create application userid/apikey</h2>
@@ -121,13 +121,13 @@
 <p><strong>Note:</strong> <em>If you do not intend to use one of the predefined 'DEV.QUEUE.' queues to put and get messages, follow the (<a href="https://cloud.ibm.com/docs/services/mqcloud?topic=mqcloud-mqoc_configure_auth_record">Assigning user/group access to a queue</a>) guide to configure the authorization record required for this queue.</em></p>
 <p>Below are the steps that I took to create a userid / apikey. </p>
 <p>1-  On the main IBM MQ Service screen, select “Application Credentials” </p>
-<p><img alt="" src="images/PY_MQ_TLS/7.png" /></p>
+<p><img alt="" src="../../images/PY_MQ_TLS/7.png" /></p>
 <p>2-  Select the “Add” button to create a NEW set of application credentials </p>
-<p><img alt="" src="images/PY_MQ_TLS/8.png" /></p>
+<p><img alt="" src="../../images/PY_MQ_TLS/8.png" /></p>
 <p>3-  Fill out the information and select “Add and generate API Key” </p>
-<p><img alt="" src="images/PY_MQ_TLS/9.png" /></p>
+<p><img alt="" src="../../images/PY_MQ_TLS/9.png" /></p>
 <p><strong>IMPORTANT:</strong> <em>You will ONLY see the API KEY ONE TIME!!  Take note of this.. !!</em></p>
-<p><img alt="" src="images/PY_MQ_TLS/10.png" /></p>
+<p><img alt="" src="../../images/PY_MQ_TLS/10.png" /></p>
 <p><strong>TASK COMPLETE</strong>
 <em>This will be the Userid &amp; Password used to authenticate to the queue manager.</em></p>
 <h2 id="create-the-keystore-for-the-client-connection">Create the keystore for the client connection</h2>
@@ -159,7 +159,7 @@
 <p><em>We will use the keystore files to connect to the queue manager via a channel that is TLS enabled.</em> </p>
 <h2 id="test-connectivity">Test connectivity</h2>
 <p>The Python “pymqi” library requires you to have the MQ Client installed. This python library is a wrapper to the C client libraries loaded with the MQ Client. We MUST have these environment variables set. </p>
-<p><img alt="" src="images/PY_MQ_TLS/11.png" /></p>
+<p><img alt="" src="../../images/PY_MQ_TLS/11.png" /></p>
 <p>If you are running these on a linux or Mac machine you can set these variables via the command line using these commands. </p>
 <pre><code>export DYLD_LIBRARY_PATH=/opt/mqm/lib64
 export MQ_INSTALLATION_PATH=/opt/mqm
