@@ -128,26 +128,25 @@ o   Install IBM MQ Client V9.3.3.1</p>
 </ul>
 <h2 id="enable-ssl-on-your-windows-client">Enable SSL on your Windows Client</h2>
 <p>You MUST have SSL policy enabled on your client machine. To ensure that you have this setup please run gpedit.exe and verify. </p>
-<div style="width: 60%; height: 60%">
+<div style="width: 50%; height: 50%">
   <img src="../../images/dotNetCore_MQ_TLS/1.png">
 </div>
 
-<div style="width: 60%; height: 60%">
-
- ![](../images/dotNetCore_MQ_TLS/1.png)
-
+<p><strong>If the above setting is not enabled, you will need to enable this.</strong></p>
+<div style="width: 50%; height: 50%">
+  <img src="../../images/dotNetCore_MQ_TLS/2.png">
 </div>
 
-<p><strong>If the above setting is not enabled, you will need to enable this.</strong></p>
-<p><img src="../../images/dotNetCore_MQ_TLS/2.png" width=50% height=50%></p>
-<p><img alt="" src="../../images/dotNetCore_MQ_TLS/2.png" /></p>
 <p><strong>NOTE</strong>:  <strong><em>You can leave the default cipher Suites order field to the default setting. We just need to make sure that we are using one of the values in this filed when we make a connection with the client application.</em></strong></p>
 <h2 id="create-ssl-cert-key">Create SSL Cert / Key</h2>
 <p>You will need to create a ssl cert and key using the below command. To do this you need to have openssl installed in your machine. </p>
 <p><strong><em>Example Command</em></strong></p>
 <p><code>openssl req -newkey rsa:2048 -nodes -keyout krierclientKey.pem -x509 -days 365 -out krierclientCert.pem</code></p>
 <p>Below is an example of the settings I used. The only thing that is important to note on this is the FQDN name. You need to set this to the fully qualified domain name (host name) of your MQ Server. You can find this information in the connection information for your queue manager in the cloud. </p>
-<p><img alt="" src="../../images/dotNetCore_MQ_TLS/3.png" /></p>
+<div style="width: 50%; height: 50%">
+  <img src="../../images/dotNetCore_MQ_TLS/3.png">
+</div>
+
 <h2 id="combine-the-cert-key-into-a-single-pem-file">Combine the Cert / Key into a single PEM file</h2>
 <p>Combine the private key and public certificate into a single file</p>
 <pre><code>cat krierclientKey.pem &gt; Krier.pem
@@ -160,7 +159,10 @@ cat krierclientCert.pem &gt;&gt; Krier.pem
 <h2 id="import-the-pfx-file-into-both-personal-key-store-and-windows-trust-store">Import the pfx file into BOTH personal key store and Windows Trust Store</h2>
 <p>On your Windows client, you will need to run the MMC to modify the certificates for windows. </p>
 <p>From the run menu, type mmc and hit enter.  Open this app below. </p>
-<p><img alt="" src="../../images/dotNetCore_MQ_TLS/4.png" /></p>
+<div style="width: 30%; height: 30%">
+  <img src="../../images/dotNetCore_MQ_TLS/4.png">
+</div>
+
 <p>From the file menu, select Add Remove Snap In and select the Certificates from the left hand menu option. Add that to the snap in and select OK. </p>
 <p><img alt="" src="../../images/dotNetCore_MQ_TLS/5.png" /></p>
 <p>In our example, we will be using the Local Computer (*SYSTEM) keystore repository. 
