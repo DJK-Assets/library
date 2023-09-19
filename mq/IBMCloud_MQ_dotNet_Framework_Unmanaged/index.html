@@ -128,7 +128,7 @@
 <li>Inspect the connection information. We will need the information outlined in red for connection to our queue manager. </li>
 </ol>
 <p><img src="../../images/dotNetFramework_MQ_TLS/6.png" style="width: 60%; height: 60%"></p>
-<p><strong><em>*</em></strong><em> TASK COMPLETE </em><strong><em>*</em></strong><strong><em>*</em></strong><strong><em>*</em></strong><strong><em>*</em></strong><strong><em>*</em></strong>****
+<p><strong>TASK COMPLETE</strong>
 You now have all the information you need to connect to this queue manager</p>
 <h2 id="create-application-useridapikey">Create application userid/apikey</h2>
 <p>Look here for more detailed information on how to setup userid and api key. <a href="https://cloud.ibm.com/docs/mqcloud?topic=mqcloud-mqoc_configure_app_qm_access">Instructions</a></p>
@@ -144,7 +144,7 @@ Below are the steps that I took to create a userid / apikey.</em></strong></p>
 <p><img src="../../images/dotNetFramework_MQ_TLS/9.png" style="width: 60%; height: 60%"></p>
 <p><strong>IMPORTANT:</strong>  <strong><em>You will ONLY see the API KEY ONE TIME!!  Take note of this.. !!</em></strong></p>
 <p><img src="../../images/dotNetFramework_MQ_TLS/10.png" style="width: 60%; height: 60%"></p>
-<p><strong><em>*</em></strong><em> TASK COMPLETE </em><strong><em>*</em></strong><strong><em>*</em></strong><strong><em>*</em></strong><strong><em>*</em></strong><strong><em>*</em></strong>****
+<p><strong>TASK COMPLETE</strong>
 This will be the Userid &amp; Password used to authenticate to the queue manager. </p>
 <h2 id="create-the-keystore-for-the-client-connection">Create the keystore for the client connection</h2>
 <p>For this next step, we need to create a keystore file and add our certificate information to the keystore. </p>
@@ -152,18 +152,15 @@ This will be the Userid &amp; Password used to authenticate to the queue manager
 <p>2.) Create the keystore with this command below. </p>
 <p><strong>Note:</strong>  <strong><em>This command line tool is part of the MQ Client</em></strong></p>
 <p>Location is here on my machine: <code>C:\Program Files\IBM\MQ\bin</code></p>
-<pre><code>runmqakm -keydb -create -db &lt;keystorename&gt;.kdb -pw &lt;password&gt; -type pkcs12 -expire 1000 -stash
-</code></pre>
+<p><code>runmqakm -keydb -create -db &lt;keystorename&gt;.kdb -pw &lt;password&gt; -type pkcs12 -expire 1000 -stash</code></p>
 <ul>
 <li><strong>keystorename</strong>  - You can name your keystore any name you wish</li>
 <li><strong>password</strong>  -  You can set the password for the keystore to anything you wish</li>
 </ul>
 <p><strong>My Example</strong> </p>
-<pre><code>&lt;MQ Client Install&gt;IBM/MQ/bin/runmqakm -keydb -create -db qmgrcert.kdb -pw password -type pkcs12 -expire 1000 -stash
-</code></pre>
+<p><code>&lt;MQ Client Install&gt;IBM/MQ/bin/runmqakm -keydb -create -db qmgrcert.kdb -pw password -type pkcs12 -expire 1000 -stash</code></p>
 <p>3.) Add the PEM (certificate) to the keystore with this command below.</p>
-<pre><code>runmqakm -cert -add -label &lt;yourlabel&gt; -db &lt;keystorename&gt;.kdb -stashed -trust enable -file &lt;pemfilename&gt;.pem
-</code></pre>
+<p><code>runmqakm -cert -add -label &lt;yourlabel&gt; -db &lt;keystorename&gt;.kdb -stashed -trust enable -file &lt;pemfilename&gt;.pem</code></p>
 <ul>
 <li><strong>yourlabel</strong>   You can add any label you like here, but I recommend using the same name as your keystorename</li>
 <li><strong>keystorename</strong>   This must match the keystore name you created in the first command. </li>
