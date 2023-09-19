@@ -53,11 +53,20 @@
     <li class="toctree-l2"><a class="nav-item" href="../IBMCloud_MQ_Python_TLS/">IBM CLoud MQ - TLS Python</a></li>
     <li class="toctree-l2 current"><a class="nav-item current" href="./">IBM CLoud MQ - TLS dotNet Core</a>
 <ul class="subnav">
+<li class="toctree-l3"><a class="nav-item toc" href="#specifications">Specifications</a></li>
 <li class="toctree-l3"><a class="nav-item toc" href="#prerequisites">Prerequisites</a></li>
-<li class="toctree-l3"><a class="nav-item toc" href="#download-the-tls-certificate-and-connection-information-from-your-queue-manager">Download the TLS Certificate and connection information from your queue manager</a></li>
-<li class="toctree-l3"><a class="nav-item toc" href="#create-application-useridapikey">Create application userid/apikey</a></li>
-<li class="toctree-l3"><a class="nav-item toc" href="#create-the-keystore-for-the-client-connection">Create the keystore for the client connection</a></li>
-<li class="toctree-l3"><a class="nav-item toc" href="#test-connectivity">Test connectivity</a></li>
+<li class="toctree-l3"><a class="nav-item toc" href="#enable-ssl-on-your-windows-client">Enable SSL on your Windows Client</a></li>
+<li class="toctree-l3"><a class="nav-item toc" href="#create-ssl-cert-key">Create SSL Cert / Key</a></li>
+<li class="toctree-l3"><a class="nav-item toc" href="#combine-the-cert-key-into-a-single-pem-file">Combine the Cert / Key into a single PEM file</a></li>
+<li class="toctree-l3"><a class="nav-item toc" href="#create-the-pfx-pk12-file-for-the-windows-cert-store">Create the pfx (pk12) file for the Windows Cert Store</a></li>
+<li class="toctree-l3"><a class="nav-item toc" href="#import-the-pfx-file-into-both-personal-key-store-and-windows-trust-store">Import the pfx file into BOTH personal key store and Windows Trust Store</a></li>
+<li class="toctree-l3"><a class="nav-item toc" href="#import-the-pem-into-the-keystroke-for-the-qm-on-the-cloud">Import the PEM into the keystroke for the QM on the cloud.</a></li>
+<li class="toctree-l3"><a class="nav-item toc" href="#create-an-userid-that-will-be-used-for-channel-authentication">Create an USERID that will be used for channel authentication.</a></li>
+<li class="toctree-l3"><a class="nav-item toc" href="#modify-the-ssl-of-the-qm-qmini-queue-manager-configuration">Modify the SSL of the QM qm.ini  Queue Manager configuration.</a></li>
+<li class="toctree-l3"><a class="nav-item toc" href="#refresh-tls-security">Refresh TLS Security</a></li>
+<li class="toctree-l3"><a class="nav-item toc" href="#get-your-connection-information-for-your-queue-manager">Get your connection information for your queue manager</a></li>
+<li class="toctree-l3"><a class="nav-item toc" href="#sample-code">Sample code</a></li>
+<li class="toctree-l3"><a class="nav-item toc" href="#debugging-connectivity-issues">Debugging – Connectivity Issues..</a></li>
 <li class="toctree-l3"><a class="nav-item toc" href="#references">References</a></li>
 </ul></li>
     <li class="toctree-l2"><a class="nav-item" href="../IBMCloud_MQ_dotNet_Framework_Unmanaged/">IBM CLoud MQ - TLS dotNet Framework</a></li>
@@ -87,9 +96,21 @@
 </ul>
 </nav>
                 <div id="content"><h1 id="ibm-mq-cloud-setup-configuration-to-run-a-sample-application">IBM MQ Cloud – Setup &amp; configuration to run a sample application</h1>
-<p><a href="../../pdf/IBM%20MQ%20Cloud%20-%20Tutorial%20Python%20TLS%20Connection.pdf">Download Instructions</a></p>
-<p>This is an example to demonstrate the configuration and setup for the IBM MQ Queue Manager and the TLS security requirements to connect.  While the sample application in this demonstration is Python, the same steps can be used for any other supported application programming language.  </p>
+<p><a href="../../pdf/How%20to%20setup%20TLS%20security%20with%20dotNET%20Core%20Managed%20Connection.pdf">Download Instructions</a></p>
+<p>This is an example to demonstrate the configuration and setup for the IBM MQ Queue Manager and the TLS security requirements to connect using a .NET Core MANAGED client. </p>
+<h2 id="specifications">Specifications</h2>
+<ul>
+<li>IBM MQ Service on IBM Cloud V 9.3.3.2</li>
+<li>IBM MQ dotNet Client V 9.3.3.1</li>
+<li>Windows Client Machine (I used Windows 2022 Server for my testing)</li>
+</ul>
 <h2 id="prerequisites">Prerequisites</h2>
+<p>•   Deploy IBM MQ Service in IBM Cloud. (The lite service will work)
+•   Deploy a Queue Manager within your Cloud MQ service
+•   Windows Client Machine
+o   Install openssl
+o   Install Visual Studio Developer Edition
+o   Install IBM MQ Client V9.3.3.1</p>
 <ul>
 <li>IBM MQ Service deployed with a running queue manager (<a href="https://cloud.ibm.com/docs/mqcloud?topic=mqcloud-mqoc_create_qm">Instructions</a>)</li>
 <li>TLS Channel Security (<a href="https://cloud.ibm.com/docs/mqcloud?topic=mqcloud-mqoc_configure_chl_ssl">Reference Material</a>)</li>
@@ -97,119 +118,212 @@
 <p><strong>Note:</strong> <em>IBM Cloud MQ Service queue manager channels have been pre-configured with TLS. If this is a NEW deployment, you will not need to configure TLS security on the channels.</em></p>
 <ul>
 <li>MQ Client must be installed on your local workstation (or the location where you plan to run the client app)</li>
-<li>For macOS, follow the steps in the (<a href="https://developer.ibm.com/tutorials/mq-macos-dev">MQ macOS Toolkit tutorial</a>).</li>
 <li>For Windows or Linux MQ clients, download and install one from the (<a href="https://www.ibm.com/support/pages/node/712701">IBM Support site</a>).</li>
-<li>Python (The example application is based on Python). You will need to have Python installed on your machine to run the sample application. </li>
+<li>Windows Client Machine<ul>
+<li>Install openssl</li>
+<li>Install Visual Studio Developer Edition</li>
+<li>Install IBM MQ Client V9.3.3.1</li>
 </ul>
-<h2 id="download-the-tls-certificate-and-connection-information-from-your-queue-manager">Download the TLS Certificate and connection information from your queue manager</h2>
-<p>1-  Log into your IBM Cloud account and navigate to your  “IBM MQ Service”. You can find your services  in the resource list. 
-2-  Select the queue manager you wish to connect to. </p>
-<p><img alt="" src="../../images/PY_MQ_TLS/1.png" /></p>
-<p>3-  Select the Key store tab, to display the certificates associated with your queue manager. 
-4-  Download the certificate by selecting the 3 dots on the certificate and selecting the “Download public certificate” button. </p>
-<p><img alt="" src="../../images/PY_MQ_TLS/2.png" /></p>
-<p><img alt="" src="../../images/PY_MQ_TLS/3.png" /></p>
-<p>5-  Copy the downloaded PEM file to your project folder, where you will run the application from. 
-6-  Download the connection information for your queue manager by selecting the “Connection Information” button. </p>
-<p><img alt="" src="../../images/PY_MQ_TLS/4.png" /></p>
-<p><strong>Note:</strong> <em>You can choose the format to download. I selected plain text in my example.</em></p>
-<p><img alt="" src="../../images/PY_MQ_TLS/5.png" /></p>
-<p>7-  Inspect the connection information. We will need the information outlined in red for connection to our queue manager. </p>
-<p><img alt="" src="../../images/PY_MQ_TLS/6.png" /></p>
-<p><strong>TASK COMPLETE</strong>
-<em>You now have all the information you need to connect to this queue manager</em></p>
-<h2 id="create-application-useridapikey">Create application userid/apikey</h2>
-<p>Look here for more detailed information on how to setup userid and api key. (<a href="https://cloud.ibm.com/docs/mqcloud?topic=mqcloud-mqoc_configure_app_qm_access">Instructions</a>)</p>
-<p>Our sample will use a pre-defined queue, so the authorization record has been automatically configured. See below instructions on how to configure authorization to a custom queue. </p>
-<p><strong>Note:</strong> <em>If you do not intend to use one of the predefined 'DEV.QUEUE.' queues to put and get messages, follow the (<a href="https://cloud.ibm.com/docs/services/mqcloud?topic=mqcloud-mqoc_configure_auth_record">Assigning user/group access to a queue</a>) guide to configure the authorization record required for this queue.</em></p>
-<p>Below are the steps that I took to create a userid / apikey. </p>
-<p>1-  On the main IBM MQ Service screen, select “Application Credentials” </p>
-<p><img alt="" src="../../images/PY_MQ_TLS/7.png" /></p>
-<p>2-  Select the “Add” button to create a NEW set of application credentials </p>
-<p><img alt="" src="../../images/PY_MQ_TLS/8.png" /></p>
-<p>3-  Fill out the information and select “Add and generate API Key” </p>
-<p><img alt="" src="../../images/PY_MQ_TLS/9.png" /></p>
-<p><strong>IMPORTANT:</strong> <em>You will ONLY see the API KEY ONE TIME!!  Take note of this.. !!</em></p>
-<p><img alt="" src="../../images/PY_MQ_TLS/10.png" /></p>
-<p><strong>TASK COMPLETE</strong>
-<em>This will be the Userid &amp; Password used to authenticate to the queue manager.</em></p>
-<h2 id="create-the-keystore-for-the-client-connection">Create the keystore for the client connection</h2>
-<p>For this next step, we need to create a keystore file and add our certificate information to the keystore. </p>
-<p>1-  Copy the downloaded PEM file (containing the cert) to your project directory. This was downloaded from the IBM Cloud QM Service page in a previous step. </p>
-<p>2-  Create the keystore with this command below. </p>
-<p><strong>Note:</strong> <em>This command line tool is part of the MQ Developers Kit</em></p>
-<pre><code>runmqakm -keydb -create -db &lt;keystorename&gt;.kdb -pw &lt;password&gt; -type pkcs12 -expire 1000 -stash
+</li>
+</ul>
+<h2 id="enable-ssl-on-your-windows-client">Enable SSL on your Windows Client</h2>
+<p>You MUST have SSL policy enabled on your client machine. To ensure that you have this setup please run gpedit.exe and verify. </p>
+<p><img alt="" src="../../images/dotNetCore_MQ_TLS/1.png" /></p>
+<p>** If the above setting is not enabled, you will need to enable this. **</p>
+<p><img alt="" src="../../images/dotNetCore_MQ_TLS/2.png" /></p>
+<p><strong>NOTE</strong>:  <strong><em>You can leave the default cipher Suites order field to the default setting. We just need to make sure that we are using one of the values in this filed when we make a connection with the client application.</em></strong></p>
+<h2 id="create-ssl-cert-key">Create SSL Cert / Key</h2>
+<p>You will need to create a ssl cert and key using the below command. To do this you need to have openssl installed in your machine. </p>
+<p><strong><em>Example Command</em></strong></p>
+<p><code>openssl req -newkey rsa:2048 -nodes -keyout krierclientKey.pem -x509 -days 365 -out krierclientCert.pem</code></p>
+<p>Below is an example of the settings I used. The only thing that is important to note on this is the FQDN name. You need to set this to the fully qualified domain name (host name) of your MQ Server. You can find this information in the connection information for your queue manager in the cloud. </p>
+<p><img alt="" src="../../images/dotNetCore_MQ_TLS/3.png" /></p>
+<h2 id="combine-the-cert-key-into-a-single-pem-file">Combine the Cert / Key into a single PEM file</h2>
+<p>Combine the private key and public certificate into a single file</p>
+<pre><code>cat krierclientKey.pem &gt; Krier.pem
+cat krierclientCert.pem &gt;&gt; Krier.pem
 </code></pre>
-<p>•   <strong>keystorename</strong>  - You can name your keystore any name you wish
-•   <strong>password</strong>  -  You can set the password for the keystore to anything you wish</p>
-<p><strong>My Example</strong></p>
-<p><code>/opt/mqm/bin/runmqakm -keydb -create -db qmgrcert.kdb -pw password -type pkcs12 -expire 1000 -stash</code></p>
-<p>3-  Add the PEM (certificate) to the keystore with this command below.</p>
-<p><strong>Note</strong> <em>This command line tool is part of the MQ Developers Kit</em></p>
-<pre><code>runmqakm -cert -add -label &lt;yourlabel&gt; -db &lt;keystorename&gt;.kdb -stashed -trust enable -file &lt;pemfilename&gt;.pem
+<p><strong>Note:</strong> <strong><em>if you are doing this on a windows machine, you can use a text editor to create a new file and paste the contents of the two PEM files into a NEW PEM file.</em></strong></p>
+<h2 id="create-the-pfx-pk12-file-for-the-windows-cert-store">Create the pfx (pk12) file for the Windows Cert Store</h2>
+<p><code>openssl pkcs12 -export -out krier.pfx -in krier.pem</code></p>
+<p><strong>Note:</strong> <strong><em>We will use this new singe PEM file with both the key and the cert on the IBM Public Cloud Queue Manager.</em></strong></p>
+<h2 id="import-the-pfx-file-into-both-personal-key-store-and-windows-trust-store">Import the pfx file into BOTH personal key store and Windows Trust Store</h2>
+<p>On your Windows client, you will need to run the MMC to modify the certificates for windows. </p>
+<p>From the run menu, type mmc and hit enter.  Open this app below. </p>
+<p><img alt="" src="../../images/dotNetCore_MQ_TLS/4.png" /></p>
+<p>From the file menu, select Add Remove Snap In and select the Certificates from the left hand menu option. Add that to the snap in and select OK. </p>
+<p><img alt="" src="../../images/dotNetCore_MQ_TLS/5.png" /></p>
+<p>In our example, we will be using the Local Computer (*SYSTEM) keystore repository. 
+<img alt="" src="../../images/dotNetCore_MQ_TLS/6.png" /></p>
+<p><img alt="" src="../../images/dotNetCore_MQ_TLS/7.png" /></p>
+<p><img alt="" src="../../images/dotNetCore_MQ_TLS/8.png" /></p>
+<p>We need to add our pfx file to BOTH the personal repository and the trusted repository. </p>
+<p><img alt="" src="../../images/dotNetCore_MQ_TLS/9.png" /></p>
+<p>Right click on the Personal/Certificates folder and select the option to import</p>
+<p><img alt="" src="../../images/dotNetCore_MQ_TLS/10.png" /></p>
+<p>Select the pfx file we created in the previous step.. </p>
+<p><img alt="" src="../../images/dotNetCore_MQ_TLS/11.png" /></p>
+<p>You should now see that in your personal key store. </p>
+<p><img alt="" src="../../images/dotNetCore_MQ_TLS/12.png" /></p>
+<p>Modify the label (friendly name of the cert you just imported) </p>
+<p>Right click on the cert in your keystore. Select properties. </p>
+<p><img alt="" src="../../images/dotNetCore_MQ_TLS/13.png" /></p>
+<p><strong>This is VERY IMPORTANT</strong>.. Give your cert a friendly name in this format. </p>
+<p><code>ibmwebspheremq   +  &lt;The USERID of your Windows User who will be running the Application&gt;</code></p>
+<p><strong>Note:</strong> <strong><em>I am logged in with the administrator userid, so that’s what I used in my example below.</em></strong> </p>
+<p><img alt="" src="../../images/dotNetCore_MQ_TLS/14.png" /></p>
+<p><strong>IMPORTANT.</strong>.<strong> </strong><em>You need to perform the same steps to import the pfx file into the Trusted Root Certification Authorities keystore</em>**</p>
+<p><img alt="" src="../../images/dotNetCore_MQ_TLS/15.png" /></p>
+<h2 id="import-the-pem-into-the-keystroke-for-the-qm-on-the-cloud">Import the PEM into the keystroke for the QM on the cloud.</h2>
+<p>Log into your queue manager on the IBM Cloud. </p>
+<p>Select the Key Store tab from the management console</p>
+<p>Select IMPORT</p>
+<p><img alt="" src="../../images/dotNetCore_MQ_TLS/16.png" /></p>
+<p>Browse to locate your PEM file. This will be the PEM file with your cert &amp; key.. In my example it’s the krier.pem file. </p>
+<p><img alt="" src="../../images/dotNetCore_MQ_TLS/17.png" /></p>
+<p>Give your cert a name (Lable). This is important to label it correctly. .</p>
+<p>You need to label it as follows. </p>
+<p>ibmwebspheremq   +  <Your queue manager name></p>
+<p><img alt="" src="../../images/dotNetCore_MQ_TLS/18.png" />
+<img alt="" src="../../images/dotNetCore_MQ_TLS/19.png" /></p>
+<p>Now we need to ensure that the cert is used for our channels. </p>
+<p>Select the 3 dots for the qert to see the management button. </p>
+<p><img alt="" src="../../images/dotNetCore_MQ_TLS/20.png" /></p>
+<p>Select to use this cert for the channels you are connecting to. In our case it’s both of these channels below. </p>
+<p><img alt="" src="../../images/dotNetCore_MQ_TLS/21.png" /></p>
+<h2 id="create-an-userid-that-will-be-used-for-channel-authentication">Create an USERID that will be used for channel authentication.</h2>
+<p>On the initial page for your IBM Cloud MQ Service, you will have the option to create a new application credential. </p>
+<p><img alt="" src="../../images/dotNetCore_MQ_TLS/22.png" /></p>
+<p>Create an application credential. </p>
+<p>Take note of your APIKEY, that will be your password when connecting. </p>
+<h2 id="modify-the-ssl-of-the-qm-qmini-queue-manager-configuration">Modify the SSL of the QM qm.ini  Queue Manager configuration.</h2>
+<p>Next we need to make a few updates to our queue manager settings. Log into the MQ Console</p>
+<p><img alt="" src="../../images/dotNetCore_MQ_TLS/23.png" /></p>
+<p>Select manage on the left hand side to bring up the management console. </p>
+<p>Select the “view configuration” link in the upper right hand corner. </p>
+<p><img alt="" src="../../images/dotNetCore_MQ_TLS/24.png" /></p>
+<p>Edit the SSL settings. </p>
+<p>Remove the cert label value and save your settings. It should be blank. </p>
+<p><img alt="" src="../../images/dotNetCore_MQ_TLS/25.png" /></p>
+<h2 id="refresh-tls-security">Refresh TLS Security</h2>
+<p>At the top of the configuration page you will see a ACTION button. </p>
+<p>Select the button and refresh the TLS settings</p>
+<p><img alt="" src="../../images/dotNetCore_MQ_TLS/26.png" /></p>
+<h2 id="get-your-connection-information-for-your-queue-manager">Get your connection information for your queue manager</h2>
+<p><img alt="" src="../../images/dotNetCore_MQ_TLS/27.png" /></p>
+<p><img alt="" src="../../images/dotNetCore_MQ_TLS/28.png" /></p>
+<p>We will need this information for our application. </p>
+<p>Running a Sample Client .NET App</p>
+<p>I am using Visual Studio code to test my applications. You need to use the IBM MQ .Net client library to connect. You have 2 options to setup your project to use the MQ Client libraries. </p>
+<h3 id="option-1-add-a-reference-to-the-amdmdnetstddll-from-the-installed-windows-mq-client">Option 1. Add a reference to the amdmdnetstd.dll from the installed windows mq client.</h3>
+<p><img alt="" src="../../images/dotNetCore_MQ_TLS/29.png" /></p>
+<p>After you add this reference you should see it in your project as displayed below. </p>
+<p><img alt="" src="../../images/dotNetCore_MQ_TLS/30.png" /></p>
+<p>The advantage of this option is that you can run MQ Client Tracing, to help you debug. </p>
+<h3 id="option-2-you-can-use-nuget-from-visual-studio-ide-to-add-the-ibm-mq-client-to-your-project">Option 2.  You can use nuGet from Visual Studio IDE to add the IBM MQ Client to your project.</h3>
+<p>Search for packages from IBM and you will find the IBMMQDotnetClient package. </p>
+<p><img alt="" src="../../images/dotNetCore_MQ_TLS/31.png" /></p>
+<h2 id="sample-code">Sample code</h2>
+<pre><code>using IBM.WMQ;
+using System;
+using System.Collections;
+using System.Text;
+
+namespace myqmgrclient
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            string strQueueManagerName = &quot;myqmgr&quot;;
+            string strChannelName = &quot;CLOUD.APP.SVRCONN&quot;;
+            string strQueueName = &quot;DEV.QUEUE.1&quot;;
+            string strServerName = &quot;myqmgr-4e4a.qm.us-south.mq.appdomain.cloud&quot;;
+            int intPort = 30762;
+            string strMsg = &quot;Hello IBM, this is a message&quot;;
+
+
+             Hashtable queueProperties = new Hashtable
+            {
+                { MQC.HOST_NAME_PROPERTY, strServerName },
+                { MQC.CHANNEL_PROPERTY, strChannelName },
+                { MQC.PORT_PROPERTY, intPort },
+                { MQC.CONNECT_OPTIONS_PROPERTY, MQC.MQCNO_RECONNECT },
+                { MQC.TRANSPORT_PROPERTY, MQC.TRANSPORT_MQSERIES_MANAGED },
+                { MQC.SSL_CERT_STORE_PROPERTY, &quot;*SYSTEM&quot; },
+                { MQC.SSL_CIPHER_SPEC_PROPERTY, &quot;TLS_RSA_WITH_AES_128_CBC_SHA256&quot; }
+            };
+
+            //Set Username
+            MQEnvironment.UserId = &quot;davetest&quot;;
+
+            //Set Passowrd
+            MQEnvironment.Password = &quot;F-5QDP8lO_cI0j7521wEchXxzd2Yv7DeA_gPtttqa28ASBV&quot;;
+
+            //Define a Queue Manager
+            try
+            {
+                Console.WriteLine(Environment.UserName.ToLower());
+                Console.WriteLine(MQEnvironment.CertificateLabel);
+                MQQueueManager myQM =
+                       new MQQueueManager(strQueueManagerName, queueProperties);
+
+                // creating a message object 
+                MQMessage queueMessage = new MQMessage();
+                queueMessage.WriteString(&quot;test message&quot;);
+
+                //Define a Queue
+                var queue = myQM.AccessQueue
+                (strQueueName, MQC.MQOO_OUTPUT + MQC.MQOO_FAIL_IF_QUIESCING);
+                MQPutMessageOptions queuePutMessageOptions = new MQPutMessageOptions();
+                queue.Put(queueMessage, queuePutMessageOptions);
+                queue.Close();
+                Console.WriteLine(&quot;Success&quot;);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                Console.WriteLine(ex.Message);
+            }
+            Console.ReadLine();
+        }
+    }
+}
 </code></pre>
-<p>•   <strong>yourlabel</strong>  -  You can add any label you like here, but I recommend using the same name as your keystorename
-•   <strong>keystorename</strong>  -  This must match the keystore name you created in the first command. 
-•   <strong>pemfilename</strong> -  This must match the name of your pem file (should be in the same directory where your running this command. </p>
-<p><strong>My Example</strong> </p>
-<p><code>/opt/mqm/bin/runmqakm -cert -add -label qmgrcertnew1 -db qmgrcertnew1.kdb -stashed -trust enable -file qmgrcert.pem</code>
- 
-4-  Verify that you have the generated kdb and sth files </p>
-<p>You should see two new files that were generated by these 2 commands above. 
-•   keystorname.kdb
-•   keystorename.sth</p>
-<p><strong>TASK COMPLETE</strong></p>
-<p><em>We will use the keystore files to connect to the queue manager via a channel that is TLS enabled.</em> </p>
-<h2 id="test-connectivity">Test connectivity</h2>
-<p>The Python “pymqi” library requires you to have the MQ Client installed. This python library is a wrapper to the C client libraries loaded with the MQ Client. We MUST have these environment variables set. </p>
-<p><img alt="" src="../../images/PY_MQ_TLS/11.png" /></p>
-<p>If you are running these on a linux or Mac machine you can set these variables via the command line using these commands. </p>
-<pre><code>export DYLD_LIBRARY_PATH=/opt/mqm/lib64
-export MQ_INSTALLATION_PATH=/opt/mqm
-</code></pre>
-<p>The PATH environment variable should include the mqm libraries. Add these directories to your path. . </p>
-<pre><code>/opt/mqm/bin:/opt/mqm/lib64:/opt/mqm/samp/bin
-</code></pre>
-<p>Below is the sample Python Application. We will need to use the connection information that was downloaded from a previous step to populate the values for the connection. </p>
-<p>We will also need to reference the keystore file and set the userid / password (api key) </p>
-<pre><code>import pymqi
-
-import logging
-
-queue_manager = 'myqm'
-queue_name = 'DEV.QUEUE.1'
-message = 'Hello from Python! - This is Dave Krier'
-
-cd = pymqi.CD()
-cd.ChannelName = b'CLOUD.ADMIN.SVRCONN'
-cd.ConnectionName = b'myqm-4e4a.qm.us-south.mq.appdomain.cloud(30000)'
-cd.ChannelType = pymqi.CMQC.MQCHT_CLNTCONN
-cd.TransportType = pymqi.CMQC.MQXPT_TCP
-cd.SSLCipherSpec = b'ANY_TLS12_OR_HIGHER'
-sco = pymqi.SCO()
-sco.KeyRepository = b'./qmgrcert' # include file name but not file extension
-
-qmgr = pymqi.QueueManager(None)
-qmgr.connect_with_options(queue_manager, user='davetest', password='F-5QDP8lO_cI0j7521wEchXxzd2Yv7DeA_gPqa28ASBx', cd=cd, sco=sco)
-
-put_queue = pymqi.Queue(qmgr, queue_name)
-put_queue.put(message)
-
-get_queue = pymqi.Queue(qmgr, queue_name)
-print(get_queue.get())
-
-put_queue.close()
-get_queue.close()
-
-qmgr.disconnect()
-</code></pre>
+<p><strong>Note:</strong> <strong><em>There are more samples provided with the MQ Client.</em></strong></p>
+<p><code>Location: C:\Program Files\IBM\MQ\tools\dotnet\samples\</code></p>
+<h2 id="debugging-connectivity-issues">Debugging – Connectivity Issues..</h2>
+<p>On the Client Application </p>
+<p>I would highly recommend you turn on MQ Tracing for your windows client. </p>
+<p><strong>IMPORTANT:</strong>  <strong><em>This requires you to reference the IBM MQ Client DLL from the installed MQ Client on your local windows machine.</em></strong></p>
+<p>You will need to set 3 environment variables for your application. </p>
+<p>Select the debug menu and then select debug properties to show this window below. Set the environment variables. </p>
+<p><strong>NOTE:</strong>  <strong><em>You need to close down Visual Studio and reopen it to get the variables to be picked up by the editor.</em></strong></p>
+<p><img alt="" src="../../images/dotNetCore_MQ_TLS/32.png" /></p>
+<p>On the MQ Server. </p>
+<p>You can see any connection errors in the logs on the server. Below is a screen shot of the logs. </p>
+<p><img alt="" src="../../images/dotNetCore_MQ_TLS/33.png" /></p>
 <h2 id="references">References</h2>
 <ul>
-<li><a href="https://developer.ibm.com/tutorials/mq-secure-msgs-tls/#step-1-create-tls-objects">https://developer.ibm.com/tutorials/mq-secure-msgs-tls/#step-1-create-tls-objects</a></li>
-<li><a href="https://stackoverflow.com/questions/14010551/how-to-convert-between-bytes-and-strings-in-python-3">https://stackoverflow.com/questions/14010551/how-to-convert-between-bytes-and-strings-in-python-3</a></li>
-<li><a href="https://cloud.ibm.com/docs/mqcloud?topic=mqcloud-mqoc_connect_app_qm">https://cloud.ibm.com/docs/mqcloud?topic=mqcloud-mqoc_connect_app_qm</a></li>
-<li><a href="https://zato.io/pymqi/examples.html">https://zato.io/pymqi/examples.html</a></li>
-<li><a href="https://developer.ibm.com/learningpaths/ibm-mq-badge/">https://developer.ibm.com/learningpaths/ibm-mq-badge/</a></li>
+<li><img alt="Connecting to IBM MQ with SSL Article" src="https://www.codeproject.com/Tips/5268164/Connecting-to-IBM-MQ-with-SSL" /></li>
+<li><img alt="How to import intermediate and root certificates via MMC" src="https://www.ssls.com/knowledgebase/how-to-import-intermediate-and-root-certificates-via-mmc/" /></li>
+<li><img alt="Troubleshooting MQ SSL" src="https://www.ibm.com/support/pages/ibm-mq-troubleshooting-common-tls-ssl-errors#9665" /></li>
+<li><img alt="Sample code repository" src="https://github.com/ibm-messaging/mq-dev-patterns/tree/master/dotnet" /></li>
+<li><img alt="Download – Sample instructions for SSL" src="https://community.ibm.com/HigherLogic/System/DownloadDocumentFile.ashx?DocumentFileKey=10233c6b-1d3b-290d-4579-a416148437be&amp;forceDialog=0" /></li>
+<li><img alt="Python SSL Unmanaged .Net Framework Sample How To" src="https://djk-assets.github.io/library/IBMCloud_MQ_Python_TLS/" /></li>
+<li><img alt="MQ Documentation – Configure TLS for Managed .NET App" src="https://www.ibm.com/docs/en/ibm-mq/9.3?topic=client-configuring-tls-managed-mq-net" /></li>
+<li><img alt="Cyper Spec for MQ Information" src="https://www.ibm.com/docs/en/ibm-mq/8.0?topic=mq-cipherspec-values-supported-in" /></li>
+<li><img alt="Key Repository’s for Managed .Net Applications" src="https://www.ibm.com/docs/en/ibm-mq/9.3?topic=client-key-repositories-managed-net" /></li>
+<li><img alt="Running .Net Core application on Linux" src="https://community.ibm.com/community/user/integration/viewdocument/running-mq-net-core-ssl-applicatio?CommunityKey=183ec850-4947-49c8-9a2e-8e7c7fc46c64&amp;tab=librarydocuments" /></li>
+<li><img alt="How to perform common IBM Management Cert Tasks" src="https://www.ibm.com/support/pages/how-perform-common-ibm-mq-management-certificate-tasks#9624" /></li>
+<li><img alt="IBM MQ in Kubernetes – Enabling TLS with signed CA" src="https://community.ibm.com/community/user/integration/blogs/atul-sharma/2022/01/06/ibm-mq-in-kubernetes-enabling-tls" /></li>
+<li><img alt="Generating PK12 Certs " src="https://www.ibm.com/docs/en/api-connect/5.0.x?topic=profiles-generating-pkcs12-file-certificate-authority" /></li>
+<li><img alt="Creating self signed Certs for use with IBM MQ on Cloud" src="https://www.ibm.com/docs/en/ibm-mq/9.3?topic=wsalw-creating-self-signed-personal-certificate-aix-linux-windows" /></li>
+<li><img alt="Stack Overflow – 2393 Error - Resolution" src="https://stackoverflow.com/questions/76536333/2393-mqrc-ssl-initialization-error-after-migrating-from-amqmdnet-dll-to-amqmdnet" /></li>
+<li><img alt="Stack Overflow – MQ TLS Error Resolution with Tracing" src="https://stackoverflow.com/questions/68416230/unable-to-connect-to-ibm-mq-with-tls-using-net-standard-library" /></li>
+<li><img alt="How to create a PEM file" src="https://www.suse.com/support/kb/doc/?id=000018152" /></li>
+<li><img alt="Documentation – Understanding the Certificate Label Requirements" src="https://www.ibm.com/docs/en/ibm-mq/9.3?topic=repository-digital-certificate-labels-understanding-requirements" /></li>
+<li><img alt="How to create a pfx file from cert and private key" src="https://stackoverflow.com/questions/6307886/how-to-create-pfx-file-from-certificate-and-private-key" />    </li>
 </ul></div>
                 <footer>
     <div class="footer-buttons">
