@@ -162,67 +162,67 @@ cat krierclientCert.pem &gt;&gt; Krier.pem
 <p>Right click on the Personal/Certificates folder and select the option to import</p>
 <p><img src="../../images/dotNetCore_MQ_TLS/10.png" style="width: 50%; height: 50%"></p>
 <p>Select the pfx file we created in the previous step.. </p>
-<p><img alt="" src="../../images/dotNetCore_MQ_TLS/11.png" /></p>
+<p><img src="../../images/dotNetCore_MQ_TLS/11.png" style="width: 50%; height: 50%"></p>
 <p>You should now see that in your personal key store. </p>
-<p><img alt="" src="../../images/dotNetCore_MQ_TLS/12.png" /></p>
+<p><img src="../../images/dotNetCore_MQ_TLS/12.png" style="width: 50%; height: 50%"></p>
 <p>Modify the label (friendly name of the cert you just imported) </p>
 <p>Right click on the cert in your keystore. Select properties. </p>
-<p><img alt="" src="../../images/dotNetCore_MQ_TLS/13.png" /></p>
+<p><img src="../../images/dotNetCore_MQ_TLS/13.png" style="width: 50%; height: 50%"></p>
 <p><strong>This is VERY IMPORTANT</strong>.. Give your cert a friendly name in this format. </p>
 <p><code>ibmwebspheremq   +  &lt;The USERID of your Windows User who will be running the Application&gt;</code></p>
 <p><strong>Note:</strong> <strong><em>I am logged in with the administrator userid, so that’s what I used in my example below.</em></strong> </p>
-<p><img alt="" src="../../images/dotNetCore_MQ_TLS/14.png" /></p>
+<p><img src="../../images/dotNetCore_MQ_TLS/14.png" style="width: 50%; height: 50%"></p>
 <p><strong>IMPORTANT.</strong>.<strong> </strong><em>You need to perform the same steps to import the pfx file into the Trusted Root Certification Authorities keystore</em>**</p>
-<p><img alt="" src="../../images/dotNetCore_MQ_TLS/15.png" /></p>
+<p><img src="../../images/dotNetCore_MQ_TLS/15.png" style="width: 50%; height: 50%"></p>
 <h2 id="import-the-pem-into-the-keystroke-for-the-qm-on-the-cloud">Import the PEM into the keystroke for the QM on the cloud.</h2>
 <p>Log into your queue manager on the IBM Cloud. </p>
 <p>Select the Key Store tab from the management console</p>
 <p>Select IMPORT</p>
-<p><img alt="" src="../../images/dotNetCore_MQ_TLS/16.png" /></p>
+<p><img src="../../images/dotNetCore_MQ_TLS/16.png" style="width: 50%; height: 50%"></p>
 <p>Browse to locate your PEM file. This will be the PEM file with your cert &amp; key.. In my example it’s the krier.pem file. </p>
-<p><img alt="" src="../../images/dotNetCore_MQ_TLS/17.png" /></p>
+<p><img src="../../images/dotNetCore_MQ_TLS/17.png" style="width: 50%; height: 50%"></p>
 <p>Give your cert a name (Lable). This is important to label it correctly. .</p>
 <p>You need to label it as follows. </p>
 <p>ibmwebspheremq   +  <Your queue manager name></p>
-<p><img alt="" src="../../images/dotNetCore_MQ_TLS/18.png" />
-<img alt="" src="../../images/dotNetCore_MQ_TLS/19.png" /></p>
+<p><img src="../../images/dotNetCore_MQ_TLS/18.png" style="width: 50%; height: 50%">
+<img src="../../images/dotNetCore_MQ_TLS/19.png" style="width: 50%; height: 50%"></p>
 <p>Now we need to ensure that the cert is used for our channels. </p>
 <p>Select the 3 dots for the qert to see the management button. </p>
-<p><img alt="" src="../../images/dotNetCore_MQ_TLS/20.png" /></p>
+<p><img src="../../images/dotNetCore_MQ_TLS/20.png" style="width: 50%; height: 50%"></p>
 <p>Select to use this cert for the channels you are connecting to. In our case it’s both of these channels below. </p>
-<p><img alt="" src="../../images/dotNetCore_MQ_TLS/21.png" /></p>
+<p><img src="../../images/dotNetCore_MQ_TLS/21.png" style="width: 50%; height: 50%"></p>
 <h2 id="create-an-userid-that-will-be-used-for-channel-authentication">Create an USERID that will be used for channel authentication.</h2>
 <p>On the initial page for your IBM Cloud MQ Service, you will have the option to create a new application credential. </p>
-<p><img alt="" src="../../images/dotNetCore_MQ_TLS/22.png" /></p>
+<p><img src="../../images/dotNetCore_MQ_TLS/22.png" style="width: 50%; height: 50%"></p>
 <p>Create an application credential. </p>
 <p>Take note of your APIKEY, that will be your password when connecting. </p>
 <h2 id="modify-the-ssl-of-the-qm-qmini-queue-manager-configuration">Modify the SSL of the QM qm.ini  Queue Manager configuration.</h2>
 <p>Next we need to make a few updates to our queue manager settings. Log into the MQ Console</p>
-<p><img alt="" src="../../images/dotNetCore_MQ_TLS/23.png" /></p>
+<p><img src="../../images/dotNetCore_MQ_TLS/23.png" style="width: 50%; height: 50%"></p>
 <p>Select manage on the left hand side to bring up the management console. </p>
 <p>Select the “view configuration” link in the upper right hand corner. </p>
-<p><img alt="" src="../../images/dotNetCore_MQ_TLS/24.png" /></p>
+<p><img src="../../images/dotNetCore_MQ_TLS/24.png" style="width: 50%; height: 50%"></p>
 <p>Edit the SSL settings. </p>
 <p>Remove the cert label value and save your settings. It should be blank. </p>
-<p><img alt="" src="../../images/dotNetCore_MQ_TLS/25.png" /></p>
+<p><img src="../../images/dotNetCore_MQ_TLS/25.png" style="width: 50%; height: 50%"></p>
 <h2 id="refresh-tls-security">Refresh TLS Security</h2>
 <p>At the top of the configuration page you will see a ACTION button. </p>
 <p>Select the button and refresh the TLS settings</p>
-<p><img alt="" src="../../images/dotNetCore_MQ_TLS/26.png" /></p>
+<p><img src="../../images/dotNetCore_MQ_TLS/26.png" style="width: 50%; height: 50%"></p>
 <h2 id="get-your-connection-information-for-your-queue-manager">Get your connection information for your queue manager</h2>
-<p><img alt="" src="../../images/dotNetCore_MQ_TLS/27.png" /></p>
-<p><img alt="" src="../../images/dotNetCore_MQ_TLS/28.png" /></p>
+<p><img src="../../images/dotNetCore_MQ_TLS/27.png" style="width: 50%; height: 50%">
+<img src="../../images/dotNetCore_MQ_TLS/28.png" style="width: 50%; height: 50%"></p>
 <p>We will need this information for our application. </p>
 <p>Running a Sample Client .NET App</p>
 <p>I am using Visual Studio code to test my applications. You need to use the IBM MQ .Net client library to connect. You have 2 options to setup your project to use the MQ Client libraries. </p>
 <h3 id="option-1-add-a-reference-to-the-amdmdnetstddll-from-the-installed-windows-mq-client">Option 1. Add a reference to the amdmdnetstd.dll from the installed windows mq client.</h3>
-<p><img alt="" src="../../images/dotNetCore_MQ_TLS/29.png" /></p>
+<p><img src="../../images/dotNetCore_MQ_TLS/29.png" style="width: 50%; height: 50%"></p>
 <p>After you add this reference you should see it in your project as displayed below. </p>
-<p><img alt="" src="../../images/dotNetCore_MQ_TLS/30.png" /></p>
+<p><img src="../../images/dotNetCore_MQ_TLS/30.png" style="width: 50%; height: 50%"></p>
 <p>The advantage of this option is that you can run MQ Client Tracing, to help you debug. </p>
 <h3 id="option-2-you-can-use-nuget-from-visual-studio-ide-to-add-the-ibm-mq-client-to-your-project">Option 2.  You can use nuGet from Visual Studio IDE to add the IBM MQ Client to your project.</h3>
 <p>Search for packages from IBM and you will find the IBMMQDotnetClient package. </p>
-<p><img alt="" src="../../images/dotNetCore_MQ_TLS/31.png" /></p>
+<p><img src="../../images/dotNetCore_MQ_TLS/31.png" style="width: 50%; height: 50%"></p>
 <h2 id="sample-code">Sample code</h2>
 <pre><code>using IBM.WMQ;
 using System;
@@ -299,10 +299,10 @@ namespace myqmgrclient
 <p>You will need to set 3 environment variables for your application. </p>
 <p>Select the debug menu and then select debug properties to show this window below. Set the environment variables. </p>
 <p><strong>NOTE:</strong>  <strong><em>You need to close down Visual Studio and reopen it to get the variables to be picked up by the editor.</em></strong></p>
-<p><img alt="" src="../../images/dotNetCore_MQ_TLS/32.png" /></p>
+<p><img src="../../images/dotNetCore_MQ_TLS/32.png" style="width: 50%; height: 50%"></p>
 <p>On the MQ Server. </p>
 <p>You can see any connection errors in the logs on the server. Below is a screen shot of the logs. </p>
-<p><img alt="" src="../../images/dotNetCore_MQ_TLS/33.png" /></p>
+<p><img src="../../images/dotNetCore_MQ_TLS/33.png" style="width: 50%; height: 50%"></p>
 <h2 id="references">References</h2>
 <ul>
 <li><img alt="Connecting to IBM MQ with SSL Article" src="https://www.codeproject.com/Tips/5268164/Connecting-to-IBM-MQ-with-SSL" /></li>
