@@ -129,8 +129,10 @@ o   Install IBM MQ Client V9.3.3.1</p>
 <h2 id="enable-ssl-on-your-windows-client">Enable SSL on your Windows Client</h2>
 <p>You MUST have SSL policy enabled on your client machine. To ensure that you have this setup please run gpedit.exe and verify. </p>
 <p><img src="../../images/dotNetCore_MQ_TLS/1.png" width="50%" max-width="50%" height="50%"></p>
+<p><img alt="" src="../../images/dotNetCore_MQ_TLS/2.png" /></p>
 <p><strong>If the above setting is not enabled, you will need to enable this.</strong></p>
-<p><img src="../../max-widthimages/dotNetCore_MQ_TLS/2.png" width="50%" height="50%"></p>
+<p><img src="../../images/dotNetCore_MQ_TLS/2.png" width="50%" height="50%"></p>
+<p><img alt="" src="../../images/dotNetCore_MQ_TLS/2.png" /></p>
 <p><strong>NOTE</strong>:  <strong><em>You can leave the default cipher Suites order field to the default setting. We just need to make sure that we are using one of the values in this filed when we make a connection with the client application.</em></strong></p>
 <h2 id="create-ssl-cert-key">Create SSL Cert / Key</h2>
 <p>You will need to create a ssl cert and key using the below command. To do this you need to have openssl installed in your machine. </p>
@@ -310,7 +312,7 @@ namespace myqmgrclient
 <li><img alt="Troubleshooting MQ SSL" src="https://www.ibm.com/support/pages/ibm-mq-troubleshooting-common-tls-ssl-errors#9665" /></li>
 <li><img alt="Sample code repository" src="https://github.com/ibm-messaging/mq-dev-patterns/tree/master/dotnet" /></li>
 <li><img alt="Download – Sample instructions for SSL" src="https://community.ibm.com/HigherLogic/System/DownloadDocumentFile.ashx?DocumentFileKey=10233c6b-1d3b-290d-4579-a416148437be&amp;forceDialog=0" /></li>
-<li><img alt="Python SSL Unmanaged .Net Framework Sample How To" src="https://djk-assets.github.io/library/IBMCloud_MQ_Python_TLS/" /></li>
+<li><img alt="Python SSL Unmanaged .Net Framework Sample How To" src="https://djk-assets.github.io/library/mq/IBMCloud_MQ_Python_TLS/" /></li>
 <li><img alt="MQ Documentation – Configure TLS for Managed .NET App" src="https://www.ibm.com/docs/en/ibm-mq/9.3?topic=client-configuring-tls-managed-mq-net" /></li>
 <li><img alt="Cyper Spec for MQ Information" src="https://www.ibm.com/docs/en/ibm-mq/8.0?topic=mq-cipherspec-values-supported-in" /></li>
 <li><img alt="Key Repository’s for Managed .Net Applications" src="https://www.ibm.com/docs/en/ibm-mq/9.3?topic=client-key-repositories-managed-net" /></li>
