@@ -137,10 +137,7 @@ o   Install IBM MQ Client V9.3.3.1</p>
 <p><strong><em>Example Command</em></strong></p>
 <p><code>openssl req -newkey rsa:2048 -nodes -keyout krierclientKey.pem -x509 -days 365 -out krierclientCert.pem</code></p>
 <p>Below is an example of the settings I used. The only thing that is important to note on this is the FQDN name. You need to set this to the fully qualified domain name (host name) of your MQ Server. You can find this information in the connection information for your queue manager in the cloud. </p>
-<div style="width: 50%; height: 50%">
-  <img src="../../images/dotNetCore_MQ_TLS/3.png">
-</div>
-
+<p><img src="../../images/dotNetCore_MQ_TLS/3.png" style="width: 50%; height: 50%"></p>
 <h2 id="combine-the-cert-key-into-a-single-pem-file">Combine the Cert / Key into a single PEM file</h2>
 <p>Combine the private key and public certificate into a single file</p>
 <pre><code>cat krierclientKey.pem &gt; Krier.pem
@@ -153,20 +150,17 @@ cat krierclientCert.pem &gt;&gt; Krier.pem
 <h2 id="import-the-pfx-file-into-both-personal-key-store-and-windows-trust-store">Import the pfx file into BOTH personal key store and Windows Trust Store</h2>
 <p>On your Windows client, you will need to run the MMC to modify the certificates for windows. </p>
 <p>From the run menu, type mmc and hit enter.  Open this app below. </p>
-<div style="width: 30%; height: 30%">
-  <img src="../../images/dotNetCore_MQ_TLS/4.png">
-</div>
-
+<p><img src="../../images/dotNetCore_MQ_TLS/4.png" style="width: 20%; height: 20%"></p>
 <p>From the file menu, select Add Remove Snap In and select the Certificates from the left hand menu option. Add that to the snap in and select OK. </p>
-<p><img alt="" src="../../images/dotNetCore_MQ_TLS/5.png" /></p>
-<p>In our example, we will be using the Local Computer (*SYSTEM) keystore repository. 
-<img alt="" src="../../images/dotNetCore_MQ_TLS/6.png" /></p>
-<p><img alt="" src="../../images/dotNetCore_MQ_TLS/7.png" /></p>
-<p><img alt="" src="../../images/dotNetCore_MQ_TLS/8.png" /></p>
+<p><img src="../../images/dotNetCore_MQ_TLS/5.png" style="width: 50%; height: 50%"></p>
+<p>In our example, we will be using the Local Computer (*SYSTEM) keystore repository. </p>
+<p><img src="../../images/dotNetCore_MQ_TLS/6.png" style="width: 50%; height: 50%"></p>
+<p><img src="../../images/dotNetCore_MQ_TLS/7.png" style="width: 50%; height: 50%"></p>
+<p><img src="../../images/dotNetCore_MQ_TLS/8.png" style="width: 50%; height: 50%"></p>
 <p>We need to add our pfx file to BOTH the personal repository and the trusted repository. </p>
-<p><img alt="" src="../../images/dotNetCore_MQ_TLS/9.png" /></p>
+<p><img src="../../images/dotNetCore_MQ_TLS/9.png" style="width: 50%; height: 50%"></p>
 <p>Right click on the Personal/Certificates folder and select the option to import</p>
-<p><img alt="" src="../../images/dotNetCore_MQ_TLS/10.png" /></p>
+<p><img src="../../images/dotNetCore_MQ_TLS/10.png" style="width: 50%; height: 50%"></p>
 <p>Select the pfx file we created in the previous step.. </p>
 <p><img alt="" src="../../images/dotNetCore_MQ_TLS/11.png" /></p>
 <p>You should now see that in your personal key store. </p>
