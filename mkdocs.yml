@@ -3,13 +3,16 @@ theme: ivory
 nav:
 - Home: index.md
 - OpenShift:
-  - Skills Needed for Install: skills-needed.md
+  - Skills Needed for Install: openshift/skills-needed.md
 - General:
-  - Setup MKDocs: mkdocs-setup.md
+  - Setup MKDocs: general/mkdocs-setup.md
 - MQ:
-  - RDQM HA Install: MQ-RDQM-Install.md
-  - IBM CLoud MQ - TLS: IBMCloud_MQ_Python_TLS.md
+  - RDQM HA Install: mq/MQ-RDQM-Install.md
+  - IBM CLoud MQ - TLS Python: mq/IBMCloud_MQ_Python_TLS.md
+  - IBM CLoud MQ - TLS dotNet Core: mq/IBMCloud_MQ_dotNet_Core_Managed.md
+  - IBM CLoud MQ - TLS dotNet Framework: mq/IBMCloud_MQ_dotNet_Framework_Unmanaged.md
+  - IBM CLoud MQ - TLS MQ Explorer: mq/IBMCloud_MQ_Explorer_Connection.md
 - CP4D:
-  - CP4D Upgrade Steps: CP4D_Upgrade.md
+  - CP4D Upgrade Steps: cp4d/CP4D_Upgrade.md
 
   
