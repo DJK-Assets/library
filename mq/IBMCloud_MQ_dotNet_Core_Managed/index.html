@@ -183,7 +183,7 @@ cat krierclientCert.pem &gt;&gt; Krier.pem
 <p><img src="../../images/dotNetCore_MQ_TLS/17.png" style="width: 50%; height: 50%"></p>
 <p>Give your cert a name (Lable). This is important to label it correctly. .</p>
 <p>You need to label it as follows. </p>
-<p>ibmwebspheremq   +  <Your queue manager name></p>
+<p>ibmwebspheremq   +  <strong>YOUR QUEUE MANAGER NAME - all lower case</strong></p>
 <p><img src="../../images/dotNetCore_MQ_TLS/18.png" style="width: 50%; height: 50%">
 <img src="../../images/dotNetCore_MQ_TLS/19.png" style="width: 50%; height: 50%"></p>
 <p>Now we need to ensure that the cert is used for our channels. </p>
@@ -202,8 +202,14 @@ cat krierclientCert.pem &gt;&gt; Krier.pem
 <p>Select manage on the left hand side to bring up the management console. </p>
 <p>Select the “view configuration” link in the upper right hand corner. </p>
 <p><img src="../../images/dotNetCore_MQ_TLS/24.png" style="width: 50%; height: 50%"></p>
-<p>Edit the SSL settings. </p>
-<p>Remove the cert label value and save your settings. It should be blank. </p>
+<p><strong>Edit the SSL settings for the channel</strong> </p>
+<p>Verify the Certlabel property is set to your correct cert for the queue manager. In our case the cert for the queue manager is "qmgrcert". </p>
+<p><img src="../../images/dotNetCore_MQ_TLS/24-a.png" style="width: 50%; height: 50%"></p>
+<p>The queue manager certs, which we have 2 defined. </p>
+<p><img src="../../images/dotNetCore_MQ_TLS/24-b.png" style="width: 50%; height: 50%"></p>
+<p>The channel SSL cert should label should be BLANK as displayed below. This setting can be found on the application channel settings. </p>
+<p><img src="../../images/dotNetCore_MQ_TLS/24-c.png" style="width: 50%; height: 50%"></p>
+<p>Any time  you change the TLS certs, we need to make sure these settings are picked up by the queue manager. You need to refresh the TLS configuration. </p>
 <p><img src="../../images/dotNetCore_MQ_TLS/25.png" style="width: 50%; height: 50%"></p>
 <h2 id="refresh-tls-security">Refresh TLS Security</h2>
 <p>At the top of the configuration page you will see a ACTION button. </p>
