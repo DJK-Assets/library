@@ -4,7 +4,7 @@
 #Author email     : dakriern@us.ibm.com
 #Original Date    : 2023-05-18
 ############################################################
-BASE_URL=https://pages.github.ibm.com/Daffy-Internal/demo-deployer-doc
+BASE_URL=https://djk-assets.github.io/library
 CONTEXT=downloads/demo-deployer-download
 RED_TEXT=`tput setaf 1`
 GREEN_TEXT=`tput setaf 2`
